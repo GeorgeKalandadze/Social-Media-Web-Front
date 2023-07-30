@@ -9,7 +9,14 @@ import Input from '../Components/Auth/Input'
 const Login = () => {
   return (
     <GuestLayout>
-        <LeftSide bgImage={SocialImg}/>
+        <LeftSide 
+            bgImage={SocialImg} 
+            page={"Log in"}
+            description={'Register to our social platform and enjoy your life, here you can see many funny news'}
+            span={'You are not registered?'}
+            buttonText={'Sign Up'}
+            link="/register"
+        />
         <RightSide className={"justify-center"}>
             <form className='flex flex-col gap-[30px]'>
                 <h1 className='text-[#555] font-bold text-[30px]'>Login</h1>
