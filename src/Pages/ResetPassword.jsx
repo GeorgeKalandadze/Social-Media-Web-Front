@@ -4,19 +4,18 @@ import LeftSide from '../Components/Auth/LeftSide'
 import SocialImg from '../assets/social-people-image-1.jpg'
 import RightSide from '../Components/Auth/RightSide'
 import Input from '../Components/Auth/Input'
-import { Link } from 'react-router-dom'
 
 
-const Login = () => {
+const ResetPassword = () => {
   return (
     <GuestLayout>
         <LeftSide 
             bgImage={SocialImg} 
-            page={"Log in"}
+            page={"Reset Password"}
             description={'Register to our social platform and enjoy your life, here you can see many funny news'}
-            span={'You are not registered?'}
-            buttonText={'Sign Up'}
-            link="/register"
+            span={'If you dont need reset your password ?'}
+            buttonText={'Log In'}
+            link="/"
         />
         <RightSide className={"justify-center"}>
             <form className='flex flex-col gap-[30px]'>
@@ -29,19 +28,17 @@ const Login = () => {
                     placeholder="Enter Password"
                     type="password"
                 />
+                <Input
+                    placeholder="Enter Password confirmation"
+                    type="password"
+                />
                 <button className="w-1/2 py-2 px-4 border-none bg-[#938ceb] text-white  cursor-pointer">
-                    Click Me
+                    Reset Password
                 </button>
-                <Link
-                    to={'/reset-password'}
-                    className="underline text-sm text-[#938ceb] hover:text-gray-900 rounded-md "
-                >
-                    Forgot your password?
-                </Link>
             </form>
         </RightSide>
     </GuestLayout>
   )
 }
 
-export default Login
+export default ResetPassword
