@@ -6,38 +6,29 @@ import LeftSide from '../Components/Auth/LeftSide';
 import SocialImg from '../assets/social-people-image-1.jpg';
 import RightSide from '../Components/Auth/RightSide';
 import Input from '../Components/Auth/Input';
-import axiosClient from '../Axios/axiosClient';
+import axiosClient, { postRequest } from '../Axios/axiosClient';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [errors, setErrors] = useState({});
 
-
-//   const handleLogin = async (e) => {
-//     e.preventDefault();
-//     try {
-//       // First, get the CSRF cookie
-//       await axios.get('http://localhost:8000/sanctum/csrf-cookie', { withCredentials: true });
-
-//       const headers = {
-//         'Content-Type': 'application/json',
-//       };
-//       const response = await axios.post('http://localhost:8000/api/login', { email, password }, { headers, withCredentials: true });
-//     } catch (error) {
-//       console.error('Login failed:', error);
-//     }
-//   };
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
         const data = { email: email, password: password };
-        const response = await axiosClient.post("/login", data);
-        console.log(response.data);
+        const response = await postRequest("/login", data);
       } catch (error) {
-        console.error("Error posting data:", error);
+        if (error.response && error.response.data) {
+            const { errors: validationErrors } = error.response.data;
+            setErrors(validationErrors);
+          } else {
+            console.error("Error posting data:", error);
+          }
       }
   };
+
 
   return (
     <GuestLayout>
@@ -57,12 +48,14 @@ const Login = () => {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            error={errors.email}
           />
           <Input
             placeholder="Enter Password"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            error={errors.password}
           />
           <button type="submit" className="w-1/2 py-2 px-4 border-none bg-[#938ceb] text-white  cursor-pointer">
             Log In
