@@ -33,7 +33,7 @@ const Login = () => {
                     Click Me
                 </button>
                 <Link
-                    to={'/reset-password'}
+                    to={'/forgot-password'}
                     className="underline text-sm text-[#938ceb] hover:text-gray-900 rounded-md "
                 >
                     Forgot your password?
