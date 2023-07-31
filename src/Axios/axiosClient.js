@@ -17,6 +17,8 @@ const setCsrfToken = async () => {
   }
 };
 
+setCsrfToken()
+
 // Set CSRF token initially when the application loads
 
 
@@ -25,6 +27,7 @@ export const get = async (url, params = {}) => {
   await setCsrfToken();
   return axiosClient.get(url, { params });
 };
+
 
 // Function to make POST request with CSRF protection
 export const postRequest = async (url, data = {}) => {

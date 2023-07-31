@@ -5,6 +5,7 @@ import SocialImg from '../assets/social-people-image-2.jpg'
 import RightSide from '../Components/Auth/RightSide'
 import Input from '../Components/Auth/Input'
 import { postRequest } from '../Axios/axiosClient'
+import { useNavigate } from 'react-router-dom'
 
 
 const Register = () => {
@@ -13,12 +14,15 @@ const Register = () => {
     const [password, setPassword] = useState('')
     const [passwordConfirmation, setPasswordConfirmation] = useState('')
     const [errors, setErrors] = useState({})
+    const navigate = useNavigate();
 
     const handleRegister = async (e) => {
         e.preventDefault();
         try {
             const data = {name:name, email: email, password: password, password_confirmation:passwordConfirmation };
             const response = await postRequest("/register", data);
+            console.log(response)
+            navigate('/verify-email')
           } catch (error) {
             if (error.response && error.response.data) {
                 const { errors: validationErrors } = error.response.data;
