@@ -11,6 +11,7 @@ const LeftSide = ({bgImage, page, description, span, buttonText, link}) => {
         flexDirection: 'column',
         gap: '30px',
         color: 'white',
+        justifyContent: 'flex-start',
       };
   return (
     <div style={divStyle}>

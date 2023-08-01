@@ -5,6 +5,7 @@ import Register from './Pages/Register'
 import ResetPassword from './Pages/ResetPassword'
 import ForgotPassword from './Pages/ForgotPassword'
 import VerifyEmail from './Pages/VerifyEmail'
+import Home from './Pages/Home'
 function App() {
  
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path='/reset-password' element={<ResetPassword/>}/>
           <Route path='/forgot-password' element={<ForgotPassword/>}/>
           <Route path='/verify-email' element={<VerifyEmail/>}/>
+          <Route path='/home' element={<Home/>}/>
         </Routes>
       </Router>
     </>

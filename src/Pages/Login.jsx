@@ -1,24 +1,26 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
 import GuestLayout from '../Layouts/GuestLayout';
 import LeftSide from '../Components/Auth/LeftSide';
 import SocialImg from '../assets/social-people-image-1.jpg';
 import RightSide from '../Components/Auth/RightSide';
 import Input from '../Components/Auth/Input';
 import axiosClient, { postRequest } from '../Axios/axiosClient';
-
+import GoogleIcon from '@mui/icons-material/Google';
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
-
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
         const data = { email: email, password: password };
         const response = await postRequest("/login", data);
+        if(response.status === 200){
+          navigate('/home')
+        }
       } catch (error) {
         if (error.response && error.response.data) {
             const { errors: validationErrors } = error.response.data;
@@ -41,7 +43,7 @@ const Login = () => {
         link="/register"
       />
       <RightSide className={"justify-center"}>
-        <form className='flex flex-col gap-[30px]' onSubmit={handleLogin}>
+        <form className='flex flex-col gap-[30px] items-center w-full' onSubmit={handleLogin}>
           <h1 className='text-[#555] font-bold text-[30px]'>Login</h1>
           <Input
             placeholder="Enter Email"
@@ -57,8 +59,12 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
             error={errors.password}
           />
-          <button type="submit" className="w-1/2 py-2 px-4 border-none bg-[#938ceb] text-white  cursor-pointer">
+          <button type="submit" className="w-full py-2 px-4 border-none bg-[#938ceb] text-white  cursor-pointer">
             Log In
+          </button>
+          <button style={{border:"1.5px solid black"}} className="w-full flex gap-2 rounded px-2 py-3 justify-center font-medium">
+            <GoogleIcon/>
+            Use Google acount
           </button>
           <Link
             to={'/forgot-password'}

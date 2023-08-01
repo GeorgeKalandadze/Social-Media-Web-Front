@@ -2,7 +2,7 @@ import React from 'react'
 
 const Input = ({placeholder, type, value, onChange, error}) => {
   return (
-    <div>
+    <div className='w-full'>
     <input
         className="border-b-2 w-full border-gray-300 py-2 px-2 focus:outline-none focus:border-blue-500"
         type={type}

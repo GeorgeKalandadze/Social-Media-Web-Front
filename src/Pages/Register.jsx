@@ -6,7 +6,7 @@ import RightSide from '../Components/Auth/RightSide'
 import Input from '../Components/Auth/Input'
 import { postRequest } from '../Axios/axiosClient'
 import { useNavigate } from 'react-router-dom'
-
+import GoogleIcon from '@mui/icons-material/Google';
 
 const Register = () => {
     const [name, setName] = useState('')
@@ -15,14 +15,17 @@ const Register = () => {
     const [passwordConfirmation, setPasswordConfirmation] = useState('')
     const [errors, setErrors] = useState({})
     const navigate = useNavigate();
-
+    
     const handleRegister = async (e) => {
         e.preventDefault();
         try {
             const data = {name:name, email: email, password: password, password_confirmation:passwordConfirmation };
             const response = await postRequest("/register", data);
             console.log(response)
-            navigate('/verify-email')
+            if(response.status === 201){
+                navigate('/verify-email')
+            }
+           
           } catch (error) {
             if (error.response && error.response.data) {
                 const { errors: validationErrors } = error.response.data;
@@ -44,7 +47,7 @@ const Register = () => {
             link="/"
         />
         <RightSide className={"justify-center"}>
-            <form className='flex flex-col gap-[30px]' onSubmit={handleRegister}>
+            <form className='flex flex-col gap-[30px] items-center w-full' onSubmit={handleRegister}>
                 <h1 className='text-[#555] font-bold text-[30px]'>Sign Up</h1>
                 <Input
                     placeholder="Enter Name"
@@ -73,8 +76,12 @@ const Register = () => {
                     value={passwordConfirmation}
                     onChange={(e) => setPasswordConfirmation(e.target.value)}
                 />
-                <button className="w-1/2 py-2 px-4 border-none bg-[#938ceb] text-white  cursor-pointer">
-                    Click Me
+                <button className="w-full py-2 px-4 border-none bg-[#938ceb] text-white  cursor-pointer">
+                    Sign Up
+                </button>
+                <button style={{border:"1.5px solid black"}} className="w-full flex gap-2 rounded px-2 py-3 justify-center font-medium">
+                    <GoogleIcon/>
+                    Use Google acount
                 </button>
             </form>
         </RightSide>

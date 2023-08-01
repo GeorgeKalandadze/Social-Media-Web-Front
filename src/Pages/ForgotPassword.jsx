@@ -14,7 +14,7 @@ const ForgotPassword = () => {
     const handleForgotPassword = async (e) => {
         e.preventDefault();
         try {
-            const response = await postRequest("/forgot-password ", email);
+            const response = await postRequest("/forgot-password-link", {email: email});
           } catch (error) {
             if (error.response && error.response.data) {
                 const { errors: validationErrors } = error.response.data;
