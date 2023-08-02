@@ -4,6 +4,10 @@ const apiBaseUrl = `${import.meta.env.VITE_API_BASE_URL}/api`;
 
 const axiosClient = axios.create({
   baseURL: apiBaseUrl,
+  headers: {
+    'Access-Control-Allow-Origin' : '*',
+    'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+    }
 });
 
 axiosClient.defaults.withCredentials = true;
@@ -23,7 +27,7 @@ setCsrfToken()
 
 
 // Function to make GET request with CSRF protection
-export const get = async (url, params = {}) => {
+export const getRequest = async (url, params = {}) => {
   await setCsrfToken();
   return axiosClient.get(url, { params });
 };
