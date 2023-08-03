@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 const LeftSide = ({bgImage, page, description, span, buttonText, link}) => {
     const divStyle = {
@@ -13,17 +14,44 @@ const LeftSide = ({bgImage, page, description, span, buttonText, link}) => {
         color: 'white',
         justifyContent: 'flex-start',
       };
+
+      const textVariant = {
+        hidden: { opacity: 0, y:20 },
+        visible: { opacity: 1, y: 0, },
+      };
   return (
-    <div style={divStyle}>
-      <h1 className="text-6xl leading-tight">{page}</h1>
-      <p className="text-lg">{description}</p>
-      <span className="text-sm">{span}</span>
+    <motion.div style={divStyle} >
+      <motion.h1 
+        variants={textVariant} 
+        initial="hidden"
+        animate={"visible"} 
+        className="text-6xl leading-tight" 
+        transition={{delay:0.5}}
+      >
+        {page}
+      </motion.h1>
+      <motion.p 
+        variants={textVariant} 
+        initial="hidden"
+        animate={"visible"} 
+        className="text-lg"  
+        transition={{delay:0.7}}
+      >
+        {description}
+      </motion.p>
+      <motion.span 
+        className="text-sm" 
+        variants={textVariant} 
+        initial="hidden"
+        animate={"visible"} 
+        transition={{delay:0.8}}
+        >{span}</motion.span>
       <Link to={link}>
-        <button className="w-1/2 py-3 px-4 border-none bg-white text-purple-800 font-bold cursor-pointer">
+        <motion.button variants={textVariant} initial="hidden"animate={"visible"} transition={{delay:0.9}} className="w-1/2 py-3 px-4 border-none bg-white text-purple-800 font-bold cursor-pointer">
           {buttonText}
-        </button>
+        </motion.button>
       </Link>
-    </div>
+    </motion.div>
   );
 };
 
