@@ -4,9 +4,9 @@ import LeftSide from '../Components/Auth/LeftSide'
 import SocialImg from '../assets/social-people-image-2.jpg'
 import RightSide from '../Components/Auth/RightSide'
 import Input from '../Components/Auth/Input'
-import axiosClient, { postRequest } from '../Axios/axiosClient'
+import { postRequest } from '../Axios/axiosClient'
 import { useNavigate } from 'react-router-dom'
-import GoogleIcon from '@mui/icons-material/Google';
+import GoogleAuthButton from '../Components/Auth/GoogleAuthButton'
 
 const Register = () => {
     const [name, setName] = useState('')
@@ -35,19 +35,6 @@ const Register = () => {
               }
           }
       };
-
-      
-      const getGoogle = (e) => {
-        e.preventDefault();
-        axiosClient.get('auth/google').
-        then((res) => {
-            if(res.data.url){
-                window.location.href = res.data.url
-            }
-        }).catch((err) => {
-            console.log(err)
-        })
-      }
 
   return (
     <GuestLayout className={"flex-row-reverse"}>
@@ -92,10 +79,7 @@ const Register = () => {
                 <button className="w-full py-2 px-4 border-none bg-[#938ceb] text-white  cursor-pointer" onClick={handleRegister}>
                     Sign Up
                 </button>
-                <button style={{border:"1.5px solid black"}} className="w-full flex gap-2 rounded px-2 py-3 justify-center font-medium" onClick={getGoogle}>
-                    <GoogleIcon/>
-                    Use Google acount
-                </button>
+                <GoogleAuthButton/>
             </form>
         </RightSide>
     </GuestLayout>

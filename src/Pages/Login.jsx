@@ -5,8 +5,8 @@ import LeftSide from '../Components/Auth/LeftSide';
 import SocialImg from '../assets/social-people-image-1.jpg';
 import RightSide from '../Components/Auth/RightSide';
 import Input from '../Components/Auth/Input';
-import axiosClient, { postRequest } from '../Axios/axiosClient';
-import GoogleIcon from '@mui/icons-material/Google';
+import { postRequest } from '../Axios/axiosClient';
+import GoogleAuthButton from '../Components/Auth/GoogleAuthButton';
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -62,10 +62,7 @@ const Login = () => {
           <button type="submit" className="w-full py-2 px-4 border-none bg-[#938ceb] text-white  cursor-pointer">
             Log In
           </button>
-          <button style={{border:"1.5px solid black"}} className="w-full flex gap-2 rounded px-2 py-3 justify-center font-medium">
-            <GoogleIcon/>
-            Use Google acount
-          </button>
+          <GoogleAuthButton/>
           <Link
             to={'/forgot-password'}
             className="underline text-sm text-[#938ceb] hover:text-gray-900 rounded-md "

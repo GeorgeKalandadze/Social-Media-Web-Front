@@ -17,7 +17,6 @@ const RightSide = ({children, className}) => {
     >
       {children}
     </motion.div>
-
   )
 }
 
