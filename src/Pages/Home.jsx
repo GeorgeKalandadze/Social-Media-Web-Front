@@ -8,7 +8,11 @@ const Home = () => {
 
   return (
     <AuthenticatedLayout>
-      <Post/>
+      <div className='flex flex-col gap-6'>
+        <Post/>
+        <Post/>
+        <Post/>
+      </div>
     </AuthenticatedLayout>
   )
 }

@@ -3,7 +3,7 @@ import PersonAvatar from '../../assets/personimg.jpg';
 
 const RightSide = () => {
   return (
-    <div className='flex flex-col gap-6'>
+    <div className='flex flex-col gap-6 sticky h-max top-0'>
       <div className='flex flex-col  gap-4 bg-gray-100  px-4 py-3 rounded-xl cursor-pointer shadow-md'> 
         <p className='text-gray-500 font-medium'>Latest Activities</p>
         <div className='flex flex-col gap-3'>
@@ -20,7 +20,7 @@ const RightSide = () => {
         </div>
       </div>
       <div className='flex flex-col  gap-4 bg-gray-100  px-4 py-3 rounded-xl cursor-pointer shadow-md'> 
-        <p className='text-gray-500 font-medium'>Latest Activities</p>
+        <p className='text-gray-500 font-medium'>Online Friends</p>
         <div>
           <div className='flex items-center gap-3'>
             <div className="relative inline-block">

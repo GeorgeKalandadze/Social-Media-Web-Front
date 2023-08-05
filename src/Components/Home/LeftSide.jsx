@@ -12,7 +12,7 @@ import NotificationIcon from '../../assets/icons/notification.png'
 
 const LeftSide = () => {
   return (
-    <div className='flex flex-col gap-6'>
+    <div className='flex flex-col gap-6 sticky h-max top-0'>
         <div className='flex items-center gap-3 bg-gray-100  px-4 py-3 rounded-xl cursor-pointer shadow-md'>
             <img 
                 src={PersonAvatar} 

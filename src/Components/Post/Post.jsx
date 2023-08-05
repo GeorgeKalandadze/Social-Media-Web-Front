@@ -6,7 +6,7 @@ import TextsmsOutlinedIcon from '@mui/icons-material/TextsmsOutlined';
 import BookmarkBorderOutlinedIcon from '@mui/icons-material/BookmarkBorderOutlined';
 const Post = () => {
   return (
-    <div className='w-full rounded-xl bg-gray-100 p-4 flex flex-col gap-4'>
+    <div className='w-full rounded-xl bg-gray-100 p-4 flex flex-col gap-4 '>
         <div className='flex items-center gap-4 mb-4'>
             <img 
                 src={PersonAvatar} 
@@ -19,7 +19,7 @@ const Post = () => {
             </div>
         </div>
         <p className='font-medium'>one of the greatest day in my life, when i was in paris with my Girlfriend.</p>
-        <img src={ParisImg} className='rounded-xl h-[600px]'/>
+        <img src={ParisImg} className='rounded-xl h-[500px]'/>
         <div className='flex items-center justify-between'>
             <div className='flex items-center gap-4'>
                 <div className='flex items-center gap-3'>
