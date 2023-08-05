@@ -1,11 +1,14 @@
 import React, { useEffect } from 'react'
 import axiosClient from '../Axios/axiosClient'
+import AuthenticatedLayout from '../Layouts/AuthenticatedLayout'
 
 
 const Home = () => {
 
   return (
-    <div>Home change language</div>
+    <AuthenticatedLayout>
+      
+    </AuthenticatedLayout>
   )
 }
 
