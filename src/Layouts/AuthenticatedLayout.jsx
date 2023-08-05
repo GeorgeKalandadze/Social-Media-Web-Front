@@ -6,10 +6,10 @@ const AuthenticatedLayout = ({children}) => {
   return (
     <div >
         <Navbar/>
-        <div className='p-4'>
+        <div className='p-4 grid grid-cols-[18vw,auto,20vw] gap-x-8'>
             <LeftSide/>
+            {children}
         </div>
-        {children}
     </div>
   )
 }

@@ -12,8 +12,8 @@ import NotificationIcon from '../../assets/icons/notification.png'
 
 const LeftSide = () => {
   return (
-    <div className='flex flex-col gap-4'>
-        <div className='flex items-center gap-3 bg-gray-100 w-[300px] px-4 py-3 rounded-xl cursor-pointer'>
+    <div className='flex flex-col gap-6'>
+        <div className='flex items-center gap-3 bg-gray-100 w-[300px] px-4 py-3 rounded-xl cursor-pointer shadow-md'>
             <img 
                 src={PersonAvatar} 
                 className="h-14 w-14 rounded-full object-cover" 
@@ -24,7 +24,7 @@ const LeftSide = () => {
                 <p className="text-gray-500 font-medium">George@gmail.com</p>
             </div>
         </div>
-        <div className='flex flex-col'>
+        <div className='flex flex-col  '>
             <Section
                 bgImg={HomeIcon}
                 text={"Home"}
@@ -52,7 +52,7 @@ const LeftSide = () => {
                 className='rounded-b-xl'
             />
         </div>
-        <button className='rounded-2xl bg-purple-800 w-[300px] text-white font-medium text-[20px] py-3'>
+        <button className='rounded-2xl bg-purple-800 w-[300px] text-white font-medium text-[20px] py-3 shadow-md'>
             Create Post
         </button>
     </div>
