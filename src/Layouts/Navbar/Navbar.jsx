@@ -8,7 +8,7 @@ import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 
 const Navbar = () => {
   return (
-    <nav className="w-full p-4 bg-gray-100 flex justify-between items-center shadow-md">
+    <nav className="w-full py-4 px-[100px] bg-gray-100 flex justify-between items-center shadow-md">
         <div className="flex items-center gap-4">
             <h1 className="text-[25px] font-bold text-purple-800">Giosocial</h1>
             <div className='rounded bg-white flex w-[300px] h-[40px] items-center px-2 gap-3'>

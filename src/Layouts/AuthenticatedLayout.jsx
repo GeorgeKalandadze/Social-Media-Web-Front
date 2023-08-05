@@ -6,9 +6,10 @@ const AuthenticatedLayout = ({children}) => {
   return (
     <div >
         <Navbar/>
-        <div className='p-4 grid grid-cols-[18vw,auto,20vw] gap-x-8'>
+        <div className='py-4 px-[100px] grid grid-cols-[18vw,auto,20vw] gap-x-8'>
             <LeftSide/>
             {children}
+            <LeftSide/>
         </div>
     </div>
   )
