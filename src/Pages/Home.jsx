@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import axiosClient from '../Axios/axiosClient'
 import AuthenticatedLayout from '../Layouts/AuthenticatedLayout'
-import Post from '../Components/Home/Post'
+import Post from '../Components/Post/Post'
 
 
 const Home = () => {
