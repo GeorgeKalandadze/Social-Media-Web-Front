@@ -2,8 +2,9 @@ import { Box, Modal } from '@mui/material'
 import React from 'react'
 import UploadImages from './UploadImages';
 import InputGroup from './InputGroup';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { closeModal } from '../../Redux/postModalSlice';
+import { updateData } from '../../Redux/postDataSlice';
 
 
 const PostForm = ({open, close}) => {
@@ -25,6 +26,18 @@ const PostForm = ({open, close}) => {
     scrollbarColor: '#888 transparent',
     zIndex: 9999
 };
+
+
+const data = useSelector((state) => state.postData);
+
+const handleInputChange = (event) => {
+  const { name, value } = event.target;
+  const newData = { [name]: value };
+  dispatch(updateData(newData));
+};
+
+console.log(data)
+
   return (
     <div>
         <Modal
@@ -39,10 +52,16 @@ const PostForm = ({open, close}) => {
                 <InputGroup
                     label="Title"
                     placeholder="Enter Title for post"
+                    name={"title"}
+                    value={data.title}
+                    onChange={handleInputChange}
                 />
                 <InputGroup
                     label="Content"
                     placeholder="Enter Content for post"
+                    name={"body"}
+                    value={data.body}
+                    onChange={handleInputChange}
                 />
                 <div className="flex items-center justify-between">
                     <button
