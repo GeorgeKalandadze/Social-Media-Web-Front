@@ -5,6 +5,15 @@ import Post from '../Components/Post/Post'
 
 
 const Home = () => {
+  useEffect(() => {
+    axiosClient.get('/posts')
+    .then((res) => {
+      console.log(res)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+  },[])
 
   return (
     <AuthenticatedLayout>

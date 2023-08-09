@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 import uploadImg from '../../assets/cloud-upload-regular-240.png';
-import './style.css'
 import { useDispatch, useSelector } from 'react-redux';
 import { updateData } from '../../Redux/postDataSlice';
+import ImagesLayout from '../../Layouts/ImagesLayout';
 
 const UploadImages = () => {
     const wrapperRef = useRef(null);
@@ -26,19 +26,6 @@ const UploadImages = () => {
       dispatch(updateData({ images: fileList }));
     }, [fileList, dispatch]);
 
-    console.log(postsData)
-
-    const customClassname = `grid ${
-        fileList.length === 1
-          ? "grid-cols-1"
-          : fileList.length === 2
-          ? "grid-cols-2 gap-2"
-          : fileList.length === 3
-          ? "grid-cols-2 grid-rows-1 gap-2"
-          : fileList.length === 4
-          ? "grid-cols-2 grid-rows-2 gap-2"
-          :""
-      }`;
 
     return (
       <div className='border-[1.7px] border-gray-200 rounded p-2 mb-4'>
@@ -63,15 +50,7 @@ const UploadImages = () => {
             />
           </div>
         ) : (
-          <div className={customClassname}>
-            {fileList.map((file, index) => (
-              <img
-                key={index}
-                src={URL.createObjectURL(file)}
-                className="w-full h-[300px] rounded post-image"
-              />
-            ))}
-          </div>
+          <ImagesLayout fileList={fileList}/>
         )}
      
       </div>
