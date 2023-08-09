@@ -1,14 +1,15 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import axiosClient from '../Axios/axiosClient'
 import AuthenticatedLayout from '../Layouts/AuthenticatedLayout'
 import Post from '../Components/Post/Post'
 
 
 const Home = () => {
+  const [posts, setPosts] = useState([]);
   useEffect(() => {
     axiosClient.get('/posts')
     .then((res) => {
-      console.log(res)
+      setPosts(res.data.data)
     })
     .catch((err) => {
       console.log(err)
@@ -18,9 +19,11 @@ const Home = () => {
   return (
     <AuthenticatedLayout>
       <div className='flex flex-col gap-6'>
-        <Post/>
-        <Post/>
-        <Post/>
+        {posts.map((post) => (
+          <Post
+            props={post}
+          />
+        ))}
       </div>
     </AuthenticatedLayout>
   )

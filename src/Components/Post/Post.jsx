@@ -4,7 +4,8 @@ import ParisImg from '../../assets/paris.jpg';
 import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
 import TextsmsOutlinedIcon from '@mui/icons-material/TextsmsOutlined';
 import BookmarkBorderOutlinedIcon from '@mui/icons-material/BookmarkBorderOutlined';
-const Post = () => {
+const Post = ({props}) => {
+    console.log(props,"props")
   return (
     <div className='w-full rounded-xl bg-gray-100 p-4 flex flex-col gap-4 '>
         <div className='flex items-center gap-4 mb-4'>
@@ -14,11 +15,11 @@ const Post = () => {
                 // style={{border:"3px solid white"}}
             />
             <div className='flex flex-col gap-1'>
-                <p className='text-[20px] font-medium'>George</p>
+                <p className='text-[20px] font-medium'>{props.user.name}</p>
                 <p className="text-gray-500 ">16 Hours ago</p>
             </div>
         </div>
-        <p className='font-medium'>one of the greatest day in my life, when i was in paris with my Girlfriend.</p>
+        <p className='font-medium'>{props.body}</p>
         <img src={ParisImg} className='rounded-xl h-[500px]'/>
         <div className='flex items-center justify-between'>
             <div className='flex items-center gap-4'>
