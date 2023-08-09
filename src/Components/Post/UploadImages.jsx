@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 import uploadImg from '../../assets/cloud-upload-regular-240.png';
 import './style.css'
+import { useDispatch, useSelector } from 'react-redux';
+import { updateData } from '../../Redux/postDataSlice';
 
 const UploadImages = () => {
     const wrapperRef = useRef(null);
@@ -8,35 +10,23 @@ const UploadImages = () => {
     const onDragEnter = () => wrapperRef.current.classList.add('dragover');
     const onDragLeave = () => wrapperRef.current.classList.remove('dragover');
     const onDrop = () => wrapperRef.current.classList.remove('dragover');
-    const [productsData, setProductsData] = useState({
-      name: '',
-      slug: '',
-      quote: '',
-      price: null,
-      quantity: null,
-      published: 0,
-      description: '',
-      discount: null,
-    });
+    const dispatch = useDispatch(); 
+    const postsData = useSelector(state => state.postData);
   
     const onFileDrop = (e) => {
       const newFiles = Array.from(e.target.files);
       if (newFiles.length > 0) {
         const updatedList = [...fileList, ...newFiles];
         setFileList(updatedList);
-        setProductsData((prevData) => ({
-          ...prevData,
-          images: updatedList,
-        }));
+        dispatch(updateData({ images: updatedList }));
       }
     };
   
     useEffect(() => {
-      setProductsData((prevData) => ({
-        ...prevData,
-        images: fileList,
-      }));
-    }, [fileList]);
+      dispatch(updateData({ images: fileList }));
+    }, [fileList, dispatch]);
+
+    console.log(postsData)
 
     const customClassname = `grid ${
         fileList.length === 1
@@ -44,8 +34,10 @@ const UploadImages = () => {
           : fileList.length === 2
           ? "grid-cols-2 gap-2"
           : fileList.length === 3
+          ? "grid-cols-2 grid-rows-1 gap-2"
+          : fileList.length === 4
           ? "grid-cols-2 grid-rows-2 gap-2"
-          : ""
+          :""
       }`;
 
     return (

@@ -7,4 +7,8 @@ export const store = configureStore({
     postModal: postModalReducer,
     postData: dataReducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 })

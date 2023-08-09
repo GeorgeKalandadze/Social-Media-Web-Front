@@ -4,6 +4,7 @@ const initialState = {
   title: '',
   body: '',
   sub_category_id: '',
+  images:[]
 };
 
 const dataSlice = createSlice({
@@ -17,5 +18,4 @@ const dataSlice = createSlice({
 });
 
 export const { updateData } = dataSlice.actions;
-
 export default dataSlice.reducer;
