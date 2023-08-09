@@ -1,6 +1,6 @@
 import React from 'react'
 import './style.css'
-const ImagesLayout = ({fileList}) => {
+const ImagesLayout = ({fileList = []}) => {
 
     const customClassname = `grid ${
         fileList.length === 1
@@ -26,10 +26,10 @@ const ImagesLayout = ({fileList}) => {
 
   return (
     <div className={customClassname}>
-            {fileList.map((file, index) => (
+            {fileList.length > 0 && fileList.map((file, index) => (
               <img
                 key={index}
-                src={URL.createObjectURL(file)}
+                src={file.path ? file.path: URL.createObjectURL(file)}
                 className={`w-full h-[250px] rounded ${customImgClassname}`}
             />
         ))}

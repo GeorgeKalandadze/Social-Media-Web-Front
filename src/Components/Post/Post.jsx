@@ -4,6 +4,7 @@ import ParisImg from '../../assets/paris.jpg';
 import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
 import TextsmsOutlinedIcon from '@mui/icons-material/TextsmsOutlined';
 import BookmarkBorderOutlinedIcon from '@mui/icons-material/BookmarkBorderOutlined';
+import ImagesLayout from '../../Layouts/ImagesLayout';
 const Post = ({props}) => {
     console.log(props,"props")
   return (
@@ -20,7 +21,7 @@ const Post = ({props}) => {
             </div>
         </div>
         <p className='font-medium'>{props.body}</p>
-        <img src={ParisImg} className='rounded-xl h-[500px]'/>
+        <ImagesLayout fileList={props.images}/>
         <div className='flex items-center justify-between'>
             <div className='flex items-center gap-4'>
                 <div className='flex items-center gap-3'>
