@@ -5,7 +5,7 @@ import InputGroup from './InputGroup';
 import { useDispatch, useSelector } from 'react-redux';
 import { closeModal } from '../../Redux/postModalSlice';
 import { updateData } from '../../Redux/postDataSlice';
-import  { getRequest } from '../../Axios/axiosClient';
+import  axiosClient, { getRequest } from '../../Axios/axiosClient';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
@@ -62,6 +62,24 @@ const PostForm = ({open, close}) => {
         setFilteredSubcategories(selectedCategory?.sub_categories || []);
         setSelectedSubcategory('');
     };
+
+    const makePost = () => {
+        const formData = new FormData();
+        formData.append('title', data.title);
+        formData.append('body', data.body);
+        formData.append('sub_category_id', data.sub_category_id);
+        data.images.forEach((image, index) => {
+            formData.append(`images[${index}]`, new File([image], image.name, { type: 'image/jpg' }));
+        });
+
+        axiosClient.post('/post/create', formData)
+        .then((res) => {
+            console.log(res)
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+    }
 
   return (
     <div>
@@ -134,6 +152,7 @@ const PostForm = ({open, close}) => {
                     <button
                         type="button"
                         className="mt-6 bg-[#423dce] text-white px-6 py-3 font-medium rounded"
+                        onClick={() => makePost()}
                     >
                         Create Post
                     </button>
