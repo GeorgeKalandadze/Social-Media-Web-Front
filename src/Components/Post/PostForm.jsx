@@ -10,7 +10,7 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import {  FormControl } from '@mui/material';
-
+import { fetchPosts } from "../../Redux/posts";
 const style = {
     position: 'fixed',
     top: '50%',
@@ -36,9 +36,8 @@ const PostForm = ({open, close}) => {
     const [selectedCategory, setSelectedCategory] = useState('');
     const [selectedSubcategory, setSelectedSubcategory] = useState('');
     const [filteredSubcategories, setFilteredSubcategories] = useState([]);
-
     const data = useSelector((state) => state.postData);
-
+     const posts = useSelector((state) => state.posts.posts.data);
     const handleInputChange = (event) => {
         const { name, value } = event.target;
         const newData = { [name]: value };
@@ -74,12 +73,16 @@ const PostForm = ({open, close}) => {
 
         axiosClient.post('/post/create', formData)
         .then((res) => {
-            console.log(res)
+            const createdPost = res.data.data;
+            const updatedPosts = [...posts, createdPost];
+            dispatch(fetchPosts(updatedPosts));
         })
         .catch((err) => {
             console.log(err)
         })
     }
+
+
 
   return (
     <div>

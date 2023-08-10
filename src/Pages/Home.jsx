@@ -5,22 +5,21 @@ import Post from '../Components/Post/Post'
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Menu, MenuItem } from "@mui/material";
-
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchPosts } from '../Redux/posts'
 
 const Home = () => {
-  const [posts, setPosts] = useState([]);
+  const posts = useSelector((state) => state.posts);
   const [anchorEl, setAnchorEl] = useState([]);
   const open = Boolean(anchorEl);
+  const userData = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
 
   useEffect(() => {
-    axiosClient.get('/posts')
-    .then((res) => {
-      setPosts(res.data.data)
-    })
-    .catch((err) => {
-      console.log(err)
-    })
-  },[])
+    dispatch(fetchPosts());
+  }, [])
+
 
   const deletePost= (postId) => {
     axiosClient
@@ -50,37 +49,39 @@ const Home = () => {
     setAnchorEl(newAnchorElArray);
   };
 
+
   return (
     <AuthenticatedLayout>
       <div className="flex flex-col gap-6">
-        {posts.map((post, index) => (
-          <>
-            <Post props={post} openModal={handleClick} isOpen={open} />
-            <Menu
-              MenuListProps={{
-                "aria-labelledby": `long-button-${post.id}`,
-              }}
-              id={`menu-${post.id}`}
-              anchorEl={anchorEl[post.id]}
-              open={Boolean(anchorEl[post.id])}
-              onClose={() => handleClose(post.id)}
-              PaperProps={{
-                style: {
-                  maxHeight: 48 * 4.5,
-                },
-              }}
-            >
-              <MenuItem>
-                <EditIcon sx={{ color: "#818cf8", marginRight: "10px" }} />
-                Edit
-              </MenuItem>
-              <MenuItem onClick={() => deletePost(post.id)}>
-                <DeleteIcon sx={{ color: "#818cf8", marginRight: "10px" }} />
-                Delete
-              </MenuItem>
-            </Menu>
-          </>
-        ))}
+        {posts.posts.data &&
+          posts.posts.data.map((post, index) => (
+            <>
+              <Post props={post} openModal={handleClick} isOpen={open} />
+              <Menu
+                MenuListProps={{
+                  "aria-labelledby": `long-button-${post.id}`,
+                }}
+                id={`menu-${post.id}`}
+                anchorEl={anchorEl[post.id]}
+                open={Boolean(anchorEl[post.id])}
+                onClose={() => handleClose(post.id)}
+                PaperProps={{
+                  style: {
+                    maxHeight: 48 * 4.5,
+                  },
+                }}
+              >
+                <MenuItem>
+                  <EditIcon sx={{ color: "#818cf8", marginRight: "10px" }} />
+                  Edit
+                </MenuItem>
+                <MenuItem onClick={() => deletePost(post.id)}>
+                  <DeleteIcon sx={{ color: "#818cf8", marginRight: "10px" }} />
+                  Delete
+                </MenuItem>
+              </Menu>
+            </>
+          ))}
       </div>
     </AuthenticatedLayout>
   );
