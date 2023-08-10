@@ -37,12 +37,14 @@ const PostForm = ({open, close}) => {
     const [selectedSubcategory, setSelectedSubcategory] = useState('');
     const [filteredSubcategories, setFilteredSubcategories] = useState([]);
     const data = useSelector((state) => state.postData);
-     const posts = useSelector((state) => state.posts.posts.data);
+    const posts = useSelector((state) => state.posts.posts.data);
     const handleInputChange = (event) => {
         const { name, value } = event.target;
         const newData = { [name]: value };
         dispatch(updateData(newData));
     };
+    const selectedPost = useSelector((state) => state.selectedPostData);
+    console.log(selectedPost,"selected post");
 
     useEffect(() => {
         getRequest('/categories')
@@ -81,6 +83,19 @@ const PostForm = ({open, close}) => {
             console.log(err)
         })
     }
+
+    useEffect(() => {
+      if (selectedPost) {
+       dispatch(updateData(selectedPost));
+      } else {
+        dispatch(updateData({
+            title:"",
+            body:"",
+            sub_category_id:null,
+            images:[]
+        }))
+      }
+    }, [selectedPost]);
 
 
 

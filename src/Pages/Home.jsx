@@ -7,6 +7,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { Menu, MenuItem } from "@mui/material";
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchPosts } from '../Redux/posts'
+import { openModal } from "../Redux/postModalSlice";
+import { updateSelectPost } from "../Redux/selectedPostDataSlice";
 
 const Home = () => {
   const posts = useSelector((state) => state.posts);
@@ -49,6 +51,14 @@ const Home = () => {
     setAnchorEl(newAnchorElArray);
   };
 
+  const openUpdateModal = (product) => {
+    dispatch(openModal());
+    dispatch(updateSelectPost(product));
+  }
+
+
+
+  
 
   return (
     <AuthenticatedLayout>
@@ -57,7 +67,7 @@ const Home = () => {
           posts.posts.data.map((post, index) => (
             <>
               <Post props={post} openModal={handleClick} isOpen={open} />
-              {userData.id === post.user.id &&
+              {userData.id === post.user.id && (
                 <Menu
                   MenuListProps={{
                     "aria-labelledby": `long-button-${post.id}`,
@@ -72,7 +82,7 @@ const Home = () => {
                     },
                   }}
                 >
-                  <MenuItem>
+                  <MenuItem onClick={() => openUpdateModal(post)}>
                     <EditIcon sx={{ color: "#818cf8", marginRight: "10px" }} />
                     Edit
                   </MenuItem>
@@ -83,7 +93,7 @@ const Home = () => {
                     Delete
                   </MenuItem>
                 </Menu>
-              }
+              )}
             </>
           ))}
       </div>
