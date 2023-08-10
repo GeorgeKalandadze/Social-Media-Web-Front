@@ -25,12 +25,12 @@ const Home = () => {
     axiosClient
       .delete(`/post/${postId}`)
       .then((response) => {
-        const deletedIndex = posts.findIndex(
+        const deletedIndex = posts.posts.data.findIndex(
           (post) => post.id === postId
         );
-        const updatedPosts = [...posts];
+        const updatedPosts = [...posts.posts.data];
         updatedPosts.splice(deletedIndex, 1);
-        setPosts(updatedPosts);
+        dispatch(fetchPosts(updatedPosts));
       })
       .catch((error) => {
         console.error("Error deleting product:", error);
