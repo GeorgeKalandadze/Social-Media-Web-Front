@@ -1,5 +1,5 @@
 import { Box, Modal } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import UploadImages from './UploadImages';
 import InputGroup from './InputGroup';
 import { useDispatch, useSelector } from 'react-redux';
@@ -45,32 +45,30 @@ const PostForm = ({open, close}) => {
         const newData = { [name]: value };
         dispatch(updateData(newData));
     };
-     const selectedPost = useSelector((state) => state.selectedPostData);    
-
+    const selectedPost = useSelector((state) => state.selectedPostData);    
+    const updatedData = {
+      title: selectedPost.title || "",
+      body: selectedPost.body || "",
+      sub_category_id: selectedPost.subcategory?.id || null,
+      images: selectedPost.images || [],
+    };
       useEffect(() => {
-        if (selectedPost) {
-          const selectedData = {
-            title: selectedPost.title,
-            body: selectedPost.body,
-            sub_category_id: selectedPost.subcategory?.id,
-            images: selectedPost.images,
-          };
-          dispatch(updateData(selectedData));
-        } else {
-          dispatch(
-            updateData({
-              title: "",
-              body: "",
-              sub_category_id: null,
-              images: [],
-            })
-          );
+          if (selectedPost) {
+            
+            dispatch(updateData(updatedData));
+          } else {
+            dispatch(
+              updateData({
+                title: "",
+                body: "",
+                sub_category_id: null,
+                images: [],
+              })
+            );
+          
         }
-      }, [selectedPost]);
-
+      }, [dispatch, open, selectedPost]);
     
-
-           
 
     useEffect(() => {
         getRequest('/categories')
@@ -119,21 +117,24 @@ const PostForm = ({open, close}) => {
 
         requestMethod(requestUrl, formData)
         .then((res) => {
-            // const createdPost = res.data.data;
-            // const updatedPosts = [...posts, createdPost];
-            // dispatch(fetchPosts(updatedPosts));
-            console.log(res)
+          if (selectedPost) {
+            const updatedPost = res.data.data;
+            const updatedPosts = posts.map((post) =>
+              post.id === updatedPost.id ? updatedPost : post
+            );
+            dispatch(fetchPosts(updatedPosts));
+          } else {
+            const createdPost = res.data.data;
+            const updatedPosts = [...posts, createdPost];
+            dispatch(fetchPosts(updatedPosts));
+          }
         })
         .catch((err) => {
             console.log(err)
         })
     }
 
-   
-
-  
-
-
+    console.log(data);
 
   return (
     <div>
@@ -221,6 +222,7 @@ const PostForm = ({open, close}) => {
             >
               Close
             </button>
+           
           </div>
         </Box>
       </Modal>

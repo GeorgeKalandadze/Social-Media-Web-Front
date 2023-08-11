@@ -8,14 +8,15 @@ const initialState = {
 };
 
 const dataSlice = createSlice({
-  name: 'postData',
+  name: "postData",
   initialState,
   reducers: {
     updateData: (state, action) => {
       return { ...state, ...action.payload };
     },
+    
   },
 });
 
-export const { updateData } = dataSlice.actions;
+export const { updateData, clearPostData } = dataSlice.actions;
 export default dataSlice.reducer;
