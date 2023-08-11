@@ -11,6 +11,8 @@ import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import {  FormControl } from '@mui/material';
 import { fetchPosts } from "../../Redux/posts";
+
+
 const style = {
     position: 'fixed',
     top: '50%',
@@ -43,8 +45,32 @@ const PostForm = ({open, close}) => {
         const newData = { [name]: value };
         dispatch(updateData(newData));
     };
-    const selectedPost = useSelector((state) => state.selectedPostData);
-    console.log(selectedPost,"selected post");
+     const selectedPost = useSelector((state) => state.selectedPostData);    
+
+      useEffect(() => {
+        if (selectedPost) {
+          const selectedData = {
+            title: selectedPost.title,
+            body: selectedPost.body,
+            sub_category_id: selectedPost.subcategory?.id,
+            images: selectedPost.images,
+          };
+          dispatch(updateData(selectedData));
+        } else {
+          dispatch(
+            updateData({
+              title: "",
+              body: "",
+              sub_category_id: null,
+              images: [],
+            })
+          );
+        }
+      }, [selectedPost]);
+
+    
+
+           
 
     useEffect(() => {
         getRequest('/categories')
@@ -69,123 +95,137 @@ const PostForm = ({open, close}) => {
         formData.append('title', data.title);
         formData.append('body', data.body);
         formData.append('sub_category_id', data.sub_category_id);
-        data.images.forEach((image, index) => {
-            formData.append(`images[${index}]`, new File([image], image.name, { type: 'image/jpg' }));
-        });
+        // if (Object.keys(selectedPost).length > 0){
+        //     formData.append("_method", "PATCH");
+        // }else{
+        //     formData.delete("_method");
+        // }
+          data.images.forEach((image, index) => {
+            formData.append(
+              `images[${index}]`,
+              new File([image], image.name, { type: "image/jpg" })
+            );
+          });
 
-        axiosClient.post('/post/create', formData)
+        const requestMethod =
+          Object.keys(selectedPost).length > 0
+            ? axiosClient.post
+            : axiosClient.post;
+            
+        const requestUrl =
+          Object.keys(selectedPost).length > 0
+            ? `/post/update/${selectedPost.id}`
+            : "/post/create";
+
+        requestMethod(requestUrl, formData)
         .then((res) => {
-            const createdPost = res.data.data;
-            const updatedPosts = [...posts, createdPost];
-            dispatch(fetchPosts(updatedPosts));
+            // const createdPost = res.data.data;
+            // const updatedPosts = [...posts, createdPost];
+            // dispatch(fetchPosts(updatedPosts));
+            console.log(res)
         })
         .catch((err) => {
             console.log(err)
         })
     }
 
-    useEffect(() => {
-      if (selectedPost) {
-       dispatch(updateData(selectedPost));
-      } else {
-        dispatch(updateData({
-            title:"",
-            body:"",
-            sub_category_id:null,
-            images:[]
-        }))
-      }
-    }, [selectedPost]);
+   
+
+  
 
 
 
   return (
     <div>
-        <Modal
-            open={open}
-            onClose={close}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-        >
-            <Box sx={style} component="form" noValidate autoComplete="off">
-                <h1 className="text-center text-[26px] font-bold text-gray-500 opacity-40 mb-4">Create New Post</h1>
-                <UploadImages/>
-                <div className="mt-4 flex flex-col gap-2">
-                        <label className=" text-[18px] text-gray-400 mb-2">Category</label>
-                        <FormControl fullWidth>
-                            <InputLabel id="demo-simple-select-label">Category</InputLabel>
-                            <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
-                                label="Category"
-                                value={selectedCategory}
-                                onChange={handleCategoryChange}
-                            >
-                                {categories.map((category) => (
-                                    <MenuItem key={category.id} value={category.id}>
-                                        {category.name}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
-                    </div>
-                    <div className="mt-4 flex flex-col gap-2 mb-4">
-                        <label className=" text-[18px] text-gray-400 mb-2">Subcategory</label>
-                        <FormControl fullWidth>
-                            <InputLabel id="demo-simple-select-label">Subcategory</InputLabel>
-                            <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
-                                label="Subcategory"
-                                value={selectedSubcategory}
-                                name="sub_category_id"
-                                onChange={(e) => {
-                                    setSelectedSubcategory(e.target.value);
-                                    handleInputChange(e);
-                                }}
-                            >
-                                {filteredSubcategories.map((subcategory) => (
-                                    <MenuItem key={subcategory.id} value={subcategory.id}>
-                                        {subcategory.name}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
-                    </div>
-                <InputGroup
-                    label="Title"
-                    placeholder="Enter Title for post"
-                    name={"title"}
-                    value={data.title}
-                    onChange={handleInputChange}
-                />
-                <InputGroup
-                    label="Content"
-                    placeholder="Enter Content for post"
-                    name={"body"}
-                    value={data.body}
-                    onChange={handleInputChange}
-                />
-                <div className="flex items-center justify-between">
-                    <button
-                        type="button"
-                        className="mt-6 bg-[#423dce] text-white px-6 py-3 font-medium rounded"
-                        onClick={() => makePost()}
-                    >
-                        Create Post
-                    </button>
-                    <button
-                        type="button"
-                        className="mt-6 bg-red-700 text-white px-6 py-3 font-medium rounded"
-                        onClick={() => dispatch(closeModal())}
-                    >
-                        Close
-                    </button>
-                </div>
-            </Box>
-        </Modal>
+      <Modal
+        open={open}
+        onClose={close}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style} component="form" noValidate autoComplete="off">
+          <h1 className="text-center text-[26px] font-bold text-gray-500 opacity-40 mb-4">
+            Create New Post
+          </h1>
+          <UploadImages />
+          <div className="mt-4 flex flex-col gap-2">
+            <label className=" text-[18px] text-gray-400 mb-2">Category</label>
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">Category</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                label="Category"
+                value={selectedCategory}
+                onChange={handleCategoryChange}
+              >
+                {categories.map((category) => (
+                  <MenuItem key={category.id} value={category.id}>
+                    {category.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </div>
+          <div className="mt-4 flex flex-col gap-2 mb-4">
+            <label className=" text-[18px] text-gray-400 mb-2">
+              Subcategory
+            </label>
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">Subcategory</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                label="Subcategory"
+                value={selectedSubcategory}
+                name="sub_category_id"
+                onChange={(e) => {
+                  setSelectedSubcategory(e.target.value);
+                  handleInputChange(e);
+                }}
+              >
+                {filteredSubcategories.map((subcategory) => (
+                  <MenuItem key={subcategory.id} value={subcategory.id}>
+                    {subcategory.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </div>
+          <InputGroup
+            label="Title"
+            placeholder="Enter Title for post"
+            name={"title"}
+            value={data.title}
+            onChange={handleInputChange}
+          />
+          <InputGroup
+            label="Content"
+            placeholder="Enter Content for post"
+            name={"body"}
+            value={data.body}
+            onChange={handleInputChange}
+          />
+          <div className="flex items-center justify-between">
+            <button
+              type="button"
+              className="mt-6 bg-[#423dce] text-white px-6 py-3 font-medium rounded"
+              onClick={() => makePost()}
+            >
+              {Object.keys(selectedPost).length !== 0 ? "Edit" : "Create"} Post
+            </button>
+            <button
+              type="button"
+              className="mt-6 bg-red-700 text-white px-6 py-3 font-medium rounded"
+              onClick={() => dispatch(closeModal())}
+            >
+              Close
+            </button>
+          </div>
+        </Box>
+      </Modal>
     </div>
-  )
+  );
 }
 
 export default PostForm
