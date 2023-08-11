@@ -1,7 +1,6 @@
 
 .post-image3:nth-child(1) {
     grid-column: 1 / span 2;
-    height: 400px;
   }
    
   .post-image3:nth-child(3) {
@@ -10,4 +9,17 @@
   }
 
  
+.clear-icon {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  cursor: pointer;
+  transition: transform 0.7s ease, background-color 0.8s ease;
+}
+
+.clear-icon:hover {
+  transform: scale(1.2);
+  background-color: #f0f0f0;
+  border-radius: 50%; /* To create a rounded background */
+}
 

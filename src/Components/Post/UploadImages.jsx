@@ -3,6 +3,8 @@ import uploadImg from '../../assets/cloud-upload-regular-240.png';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateData } from '../../Redux/postDataSlice';
 import ImagesLayout from '../../Layouts/ImagesLayout';
+import '../../styles/styles.css'
+import ClearIcon from "@mui/icons-material/Clear";
 
 const UploadImages = () => {
     const wrapperRef = useRef(null);
@@ -26,9 +28,36 @@ const UploadImages = () => {
       dispatch(updateData({ images: fileList }));
     }, [fileList, dispatch]);
 
+    const fileRemove = (file) => {
+      const updatedList = fileList.filter((item) => item !== file);
+      setFileList(updatedList);
+    };
+
+
+    const customClassname = `grid ${
+      fileList.length === 1
+        ? "grid-cols-1"
+        : fileList.length === 2
+        ? "grid-cols-2 gap-1"
+        : fileList.length === 3
+        ? "grid-cols-2 grid-rows-1 gap-1"
+        : fileList.length === 4
+        ? "grid-cols-2 grid-rows-2 gap-1"
+        : ""
+    }`;
+
+    const customImgClassname = `${
+      fileList.length === 3
+        ? " post-image3"
+        : fileList.length === 4
+        ? " post-image4"
+        : fileList.length === 5
+        ? " post-image5"
+        : ""
+    }`;
 
     return (
-      <div className='border-[1.7px] border-gray-200 rounded p-2 mb-4'>
+      <div className="border-[1.7px] border-gray-200 rounded p-2 mb-4">
         {fileList.length === 0 ? (
           <div
             ref={wrapperRef}
@@ -50,9 +79,21 @@ const UploadImages = () => {
             />
           </div>
         ) : (
-          <ImagesLayout fileList={fileList}/>
+          <div className={customClassname}>
+            {fileList.map((file, index) => (
+              <div key={index} className={`relative ${customImgClassname}`}>
+                <ClearIcon
+                  className="absolute top-2 right-2 cursor-pointer  clear-icon"
+                  onClick={() => fileRemove(file)}
+                />
+                <img
+                  src={file.path ? file.path : URL.createObjectURL(file)}
+                  className={`w-full rounded h-full`}
+                />
+              </div>
+            ))}
+          </div>
         )}
-     
       </div>
     );
   };
