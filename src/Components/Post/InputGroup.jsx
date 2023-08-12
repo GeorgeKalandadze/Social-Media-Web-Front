@@ -12,7 +12,7 @@ const InputGroup = ({ label, placeholder, type, name, className = '', value, onC
                 value={value}
                 onChange={onChange}
             />
-            <p className="text-red-600">{error && error}</p>
+            <p className="text-red-600 mt-2">{error && error}</p>
         </div>
     );
 };

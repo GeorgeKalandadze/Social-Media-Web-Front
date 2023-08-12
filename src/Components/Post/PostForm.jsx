@@ -38,6 +38,7 @@ const PostForm = ({open, close}) => {
     const [selectedCategory, setSelectedCategory] = useState('');
     const [selectedSubcategory, setSelectedSubcategory] = useState('');
     const [filteredSubcategories, setFilteredSubcategories] = useState([]);
+      const [errors, setErrors] = useState({});
     const data = useSelector((state) => state.postData);
     const posts = useSelector((state) => state.posts.posts.data);
     const handleInputChange = (event) => {
@@ -49,9 +50,18 @@ const PostForm = ({open, close}) => {
     const updatedData = {
       title: selectedPost.title || "",
       body: selectedPost.body || "",
-      sub_category_id: selectedPost.subcategory?.id || null,
+      sub_category_id: selectedPost.subcategory?.id || "",
       images: selectedPost.images || [],
     };
+  
+
+    useEffect(() => {
+      if (close) {
+        setErrors({});
+      }
+    }, [close]);
+
+
       useEffect(() => {
           if (selectedPost) {
             
@@ -130,11 +140,13 @@ const PostForm = ({open, close}) => {
           }
         })
         .catch((err) => {
-            console.log(err)
+            const response = err.response;
+            if (response && response.status === 422) {
+              setErrors(response.data.errors);
+            }
         })
     }
 
-    console.log(data);
 
   return (
     <div>
@@ -148,7 +160,10 @@ const PostForm = ({open, close}) => {
           <h1 className="text-center text-[26px] font-bold text-gray-500 opacity-40 mb-4">
             Create New Post
           </h1>
-          <UploadImages />
+          <UploadImages selectedImages={selectedPost.images} />
+          <p className="text-red-600 mt-2">
+            {errors.images?.[0] && errors.images?.[0]}
+          </p>
           <div className="mt-4 flex flex-col gap-2">
             <label className=" text-[18px] text-gray-400 mb-2">Category</label>
             <FormControl fullWidth>
@@ -191,6 +206,9 @@ const PostForm = ({open, close}) => {
                   </MenuItem>
                 ))}
               </Select>
+              <p className="text-red-600 mt-2">
+                {errors.sub_category_id?.[0] && errors.sub_category_id?.[0]}
+              </p>
             </FormControl>
           </div>
           <InputGroup
@@ -199,6 +217,7 @@ const PostForm = ({open, close}) => {
             name={"title"}
             value={data.title}
             onChange={handleInputChange}
+            error={errors.title?.[0]}
           />
           <InputGroup
             label="Content"
@@ -206,6 +225,7 @@ const PostForm = ({open, close}) => {
             name={"body"}
             value={data.body}
             onChange={handleInputChange}
+            error={errors.body?.[0]}
           />
           <div className="flex items-center justify-between">
             <button
@@ -222,7 +242,6 @@ const PostForm = ({open, close}) => {
             >
               Close
             </button>
-           
           </div>
         </Box>
       </Modal>
