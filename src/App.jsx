@@ -1,4 +1,4 @@
-import './App.css'
+
 import { BrowserRouter as Router,Routes,Route} from "react-router-dom"
 import Login from './Pages/Login'
 import Register from './Pages/Register'
@@ -7,8 +7,12 @@ import ForgotPassword from './Pages/ForgotPassword'
 import VerifyEmail from './Pages/VerifyEmail'
 import Home from './Pages/Home'
 import LoginWithGoogle from './Pages/LoginWithGoogle'
+
+
 function App() {
  
+ 
+
   return (
     <>
       <Router>
