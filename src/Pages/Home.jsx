@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchPosts } from '../Redux/posts'
 import { openModal } from "../Redux/postModalSlice";
 import { updateSelectPost } from "../Redux/selectedPostDataSlice";
+import { fetchUser } from '../Redux/userDataSlice';
 
 const Home = () => {
   const posts = useSelector((state) => state.posts);
@@ -21,6 +22,10 @@ const Home = () => {
   useEffect(() => {
     dispatch(fetchPosts());
   }, [])
+
+   useEffect(() => {
+     dispatch(fetchUser());
+   }, []);
 
 
   const deletePost= (postId) => {
@@ -58,8 +63,20 @@ const Home = () => {
 
 
  
-  
+  const handlePermission = (post) => {
+    if (
+      userData &&
+      userData.id &&
+      userData.roles &&
+      userData.roles.length > 0 &&
+      (userData.id === post.user.id || userData.roles[0].name === "admin")
+    ) {
+      return true;
+    }
+    return false;
+  };
 
+  console.log(userData);
   return (
     <AuthenticatedLayout>
       <div className="flex flex-col gap-6">
@@ -67,7 +84,7 @@ const Home = () => {
           posts.posts.data.map((post, index) => (
             <>
               <Post props={post} openModal={handleClick} isOpen={open} />
-              {userData.id === post.user.id && (
+              {handlePermission(post) && (
                 <Menu
                   MenuListProps={{
                     "aria-labelledby": `long-button-${post.id}`,

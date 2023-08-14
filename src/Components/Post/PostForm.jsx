@@ -11,6 +11,7 @@ import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import {  FormControl } from '@mui/material';
 import { fetchPosts } from "../../Redux/posts";
+import { useForm } from 'react-hook-form';
 
 
 const style = {
@@ -38,7 +39,7 @@ const PostForm = ({open, close}) => {
     const [selectedCategory, setSelectedCategory] = useState('');
     const [selectedSubcategory, setSelectedSubcategory] = useState('');
     const [filteredSubcategories, setFilteredSubcategories] = useState([]);
-      const [errors, setErrors] = useState({});
+    const [errors, setErrors] = useState({});
     const data = useSelector((state) => state.postData);
     const posts = useSelector((state) => state.posts.posts.data);
     const handleInputChange = (event) => {
@@ -103,11 +104,6 @@ const PostForm = ({open, close}) => {
         formData.append('title', data.title);
         formData.append('body', data.body);
         formData.append('sub_category_id', data.sub_category_id);
-        // if (Object.keys(selectedPost).length > 0){
-        //     formData.append("_method", "PATCH");
-        // }else{
-        //     formData.delete("_method");
-        // }
           data.images.forEach((image, index) => {
             formData.append(
               `images[${index}]`,

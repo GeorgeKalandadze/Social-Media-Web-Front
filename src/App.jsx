@@ -7,19 +7,11 @@ import ForgotPassword from './Pages/ForgotPassword'
 import VerifyEmail from './Pages/VerifyEmail'
 import Home from './Pages/Home'
 import LoginWithGoogle from './Pages/LoginWithGoogle'
-import { useDispatch, useSelector } from 'react-redux'
-import { useEffect } from 'react'
-import axiosClient from './Axios/axiosClient'
-import { fetchUser } from './Redux/userDataSlice'
 
 
 function App() {
-  const userData = useSelector((state) => state.user);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(fetchUser());
-  }, []);
+ 
+ 
 
   return (
     <>

@@ -1,6 +1,7 @@
 import React from 'react';
 
 const InputGroup = ({ label, placeholder, type, name, className = '', value, onChange, error }) => {
+    
     return (
         <div className="flex flex-col justify-center  mb-[20px]">
             <label className=" text-[18px] text-gray-400 mb-2">{label}</label>
