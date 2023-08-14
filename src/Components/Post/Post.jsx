@@ -6,10 +6,11 @@ import BookmarkBorderOutlinedIcon from '@mui/icons-material/BookmarkBorderOutlin
 import ImagesLayout from '../../Layouts/ImagesLayout';
 import IconButton from '@mui/material/IconButton';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import FormatTimeAgo from '../FormatTimeAgo';
 
 const Post = ({props, openModal, isOpen}) => {
-    
-   
+   const timeAgo = FormatTimeAgo(props.created_at);
+   console.log(props)
   return (
     <div className="w-full rounded-xl bg-gray-100 p-4 flex flex-col gap-4 ">
       <div className="flex items-center justify-between">
@@ -21,7 +22,7 @@ const Post = ({props, openModal, isOpen}) => {
           />
           <div className="flex flex-col gap-1">
             <p className="text-[20px] font-medium">{props.user.name}</p>
-            <p className="text-gray-500 ">16 Hours ago</p>
+            <p className="text-gray-500 ">{timeAgo}</p>
           </div>
         </div>
         <IconButton
