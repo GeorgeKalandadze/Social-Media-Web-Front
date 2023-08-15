@@ -3,7 +3,7 @@ import PersonAvatar from "../../assets/personimg.jpg";
 import SendIcon from "@mui/icons-material/Send";
 import axiosClient from '../../Axios/axiosClient';
 
-const CommentInputGroup = ({postId}) => {
+const CommentInputGroup = ({postId, setComments, comments}) => {
     const [commentBody, setCommentBody] = useState("");
 
     const makeComment = (e) => {
@@ -16,13 +16,18 @@ const CommentInputGroup = ({postId}) => {
         };
         axiosClient.post("/comment/create", commentData)
         .then((res) => {
-            console.log(res);
+            console.log(res,"response");
+            setComments([...comments, res.data.data])
+            setCommentBody("");
+            
         })
         .catch((err) => {
             console.log(err);
         });
       }
     };
+
+     console.log(comments, "comments");
    
   return (
     <div className="flex items-center gap-2">

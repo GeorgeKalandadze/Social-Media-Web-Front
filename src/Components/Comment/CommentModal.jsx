@@ -38,7 +38,7 @@ const CommentModal = ({isOpen, closeModal, post}) => {
         })
     },[])
 
-    console.log(comments,"comments")
+   
   return (
     <div>
       <Modal
@@ -56,10 +56,12 @@ const CommentModal = ({isOpen, closeModal, post}) => {
                   className="h-10 w-10 rounded-full object-cover"
                 />
                 <div>
-                  <div className="bg-gray-200 rounded-xl p-3">
-                    <p className="font-medium">{comment.user.name}</p>
-                    <p>{comment.body}</p>
-                  </div>
+                  {comment.user && (
+                    <div className="bg-gray-200 rounded-xl p-3">
+                      <p className="font-medium">{comment.user.name}</p>
+                      <p>{comment.body}</p>
+                    </div>
+                  )}
                   <div className="flex items-center justify-between gap-4 mt-2">
                     <div className="flex items-center gap-4">
                       <div className="flex items-center gap-2">
@@ -80,7 +82,11 @@ const CommentModal = ({isOpen, closeModal, post}) => {
             </div>
           ))}
           <div className="p-4  w-full shadow-2xl static">
-            <CommentInputGroup postId={post.id} />
+            <CommentInputGroup
+              postId={post.id}
+              setComments={setComments}
+              comments={comments}
+            />
           </div>
         </Box>
       </Modal>
