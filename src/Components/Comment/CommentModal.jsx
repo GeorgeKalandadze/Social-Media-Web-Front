@@ -18,7 +18,7 @@ const style = {
   bgcolor: "background.paper",
   boxShadow: 14,
   borderRadius: 1,
-  p: 2,
+  
   maxHeight: "95vh",
   overflowY: "auto",
   scrollbarWidth: "thin",
@@ -42,7 +42,7 @@ const CommentModal = ({isOpen, closeModal, post}) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style} component="form" noValidate autoComplete="off">
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 p-4">
             <div className="flex gap-3">
               <img
                 src={PersonAvatar}
@@ -56,20 +56,25 @@ const CommentModal = ({isOpen, closeModal, post}) => {
                     ფანჯარას
                   </p>
                 </div>
-                <div className="flex items-center gap-4 mt-2">
-                  <div className="flex items-center gap-2">
-                    <FavoriteBorderIcon />
-                    <p>Like</p>
+                <div className="flex items-center justify-between gap-4 mt-2">
+                  <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-2">
+                      <FavoriteBorderIcon />
+                      <p>Like</p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <ReplyIcon />
+                      <p>Reply</p>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <ReplyIcon />
-                    <p>Reply</p>
-                  </div>
+                  <p className="text-sm text-gray-400">1 Hours Ago</p>
                 </div>
               </div>
             </div>
           </div>
-          <CommentInputGroup />
+          <div className="p-4  w-full shadow-2xl static">
+            <CommentInputGroup />
+          </div>
         </Box>
       </Modal>
     </div>
