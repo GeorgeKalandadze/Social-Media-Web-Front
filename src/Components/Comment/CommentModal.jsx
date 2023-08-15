@@ -1,10 +1,12 @@
 import { Box, Modal } from '@mui/material';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import PersonAvatar from "../../assets/personimg.jpg";
 import SendIcon from "@mui/icons-material/Send";
 import CommentInputGroup from './CommentInputGroup';
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ReplyIcon from "@mui/icons-material/Reply";
+import axiosClient from '../../Axios/axiosClient';
+import FormatTimeAgo from '../FormatTimeAgo';
 
 
 const style = {
@@ -28,11 +30,15 @@ const style = {
 
 
 const CommentModal = ({isOpen, closeModal, post}) => {
-    const [commentText, setCommentText] = useState("");
+    const [comments, setComments] = useState([])
+    useEffect(() => {
+        axiosClient.get(`/comment/${post.id}`)
+        .then((res) => {
+            setComments(res.data.data)
+        })
+    },[])
 
-    const handleCommentChange = (event) => {
-      setCommentText(event.target.value);
-    };
+    console.log(comments,"comments")
   return (
     <div>
       <Modal
@@ -42,38 +48,39 @@ const CommentModal = ({isOpen, closeModal, post}) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style} component="form" noValidate autoComplete="off">
-          <div className="flex flex-col gap-4 p-4">
-            <div className="flex gap-3">
-              <img
-                src={PersonAvatar}
-                className="h-10 w-10 rounded-full object-cover"
-              />
-              <div>
-                <div className="bg-gray-200 rounded-xl p-3">
-                  <p className="font-medium">George Kala</p>
-                  <p>
-                    ტელეფონით ვცდილობ შეძენას და საერთოდ არ აჩვენებს ბილეთის
-                    ფანჯარას
-                  </p>
-                </div>
-                <div className="flex items-center justify-between gap-4 mt-2">
-                  <div className="flex items-center gap-4">
-                    <div className="flex items-center gap-2">
-                      <FavoriteBorderIcon />
-                      <p>Like</p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <ReplyIcon />
-                      <p>Reply</p>
-                    </div>
+          {comments.map((comment) => (
+            <div className="flex flex-col gap-4 p-4">
+              <div className="flex gap-3">
+                <img
+                  src={PersonAvatar}
+                  className="h-10 w-10 rounded-full object-cover"
+                />
+                <div>
+                  <div className="bg-gray-200 rounded-xl p-3">
+                    <p className="font-medium">{comment.user.name}</p>
+                    <p>{comment.body}</p>
                   </div>
-                  <p className="text-sm text-gray-400">1 Hours Ago</p>
+                  <div className="flex items-center justify-between gap-4 mt-2">
+                    <div className="flex items-center gap-4">
+                      <div className="flex items-center gap-2">
+                        <FavoriteBorderIcon />
+                        <p>Like</p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <ReplyIcon />
+                        <p>Reply</p>
+                      </div>
+                    </div>
+                    <p className="text-sm text-gray-400">
+                      {FormatTimeAgo(comment.created_at)}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          ))}
           <div className="p-4  w-full shadow-2xl static">
-            <CommentInputGroup />
+            <CommentInputGroup postId={post.id} />
           </div>
         </Box>
       </Modal>
