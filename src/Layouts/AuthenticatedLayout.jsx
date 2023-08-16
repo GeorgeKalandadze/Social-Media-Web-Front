@@ -12,7 +12,6 @@ const AuthenticatedLayout = ({children}) => {
   const dispatch = useDispatch();
   const handleClose = () => {
     dispatch(closeModal());
-    
   }
 
   return (
