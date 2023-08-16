@@ -33,6 +33,8 @@ const style = {
 const CommentModal = ({isOpen, closeModal, post}) => {
     const [comments, setComments] = useState([]);
     const [showReplyInput, setShowReplyInput] = useState({});
+    const [editingCommentId, setEditingCommentId] = useState(null);
+    const [editedCommentText, setEditedCommentText] = useState("");
     useEffect(() => {
         axiosClient.get(`/comment/${post.id}`)
         .then((res) => {
@@ -63,6 +65,21 @@ const CommentModal = ({isOpen, closeModal, post}) => {
           });
       };
 
+      const editComment = (id, newText) => {
+        axiosClient
+          .put(`/comment/${id}`, { body: newText, post_id:post.id }) 
+          .then((response) => {
+            const updatedComments = comments.map((comment) =>
+              comment.id === id ? { ...comment, body: newText } : comment
+            );
+            setComments(updatedComments);
+            setEditingCommentId(null); 
+          })
+          .catch((error) => {
+            console.error("Error editing comment:", error);
+          });
+      };
+
    
   return (
     <div>
@@ -81,7 +98,29 @@ const CommentModal = ({isOpen, closeModal, post}) => {
                   className="h-10 w-10 rounded-full object-cover"
                 />
                 <div>
-                  {comment.user && (
+                  {editingCommentId === comment.id ? (
+                    <div className="bg-gray-200 rounded-xl p-3 flex gap-2">
+                      <textarea
+                        name="body"
+                        rows="1"
+                        cols="10"
+                        wrap="soft"
+                        placeholder="Write Comment"
+                        className="rounded px-4 py-2 outline-none w-full overflow-hidden resize-none bg-transparent "
+                        value={editedCommentText}
+                        onChange={(e) => setEditedCommentText(e.target.value)}
+                        style={{ wordWrap: "break-word" }}
+                      ></textarea>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          editComment(comment.id, editedCommentText)
+                        }
+                      >
+                        <SendIcon />
+                      </button>
+                    </div>
+                  ) : (
                     <div className="bg-gray-200 rounded-xl p-3">
                       <div className="flex items-center justify-between">
                         <p className="font-medium">{comment.user.name}</p>
@@ -89,7 +128,6 @@ const CommentModal = ({isOpen, closeModal, post}) => {
                           {FormatTimeAgo(comment.created_at)}
                         </p>
                       </div>
-
                       <p>{comment.body}</p>
                     </div>
                   )}
@@ -113,7 +151,13 @@ const CommentModal = ({isOpen, closeModal, post}) => {
                         <DeleteIcon />
                         <p>Delete</p>
                       </div>
-                      <div className="flex items-center gap-2 cursor-pointer">
+                      <div
+                        className="flex items-center gap-2 cursor-pointer"
+                        onClick={() => {
+                          setEditingCommentId(comment.id);
+                          setEditedCommentText(comment.body);
+                        }}
+                      >
                         <EditIcon />
                         <p>Edit</p>
                       </div>
