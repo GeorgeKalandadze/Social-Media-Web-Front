@@ -7,7 +7,8 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ReplyIcon from "@mui/icons-material/Reply";
 import axiosClient from '../../Axios/axiosClient';
 import FormatTimeAgo from '../FormatTimeAgo';
-
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 
 const style = {
   position: "fixed",
@@ -30,13 +31,37 @@ const style = {
 
 
 const CommentModal = ({isOpen, closeModal, post}) => {
-    const [comments, setComments] = useState([])
+    const [comments, setComments] = useState([]);
+    const [showReplyInput, setShowReplyInput] = useState({});
     useEffect(() => {
         axiosClient.get(`/comment/${post.id}`)
         .then((res) => {
             setComments(res.data.data)
         })
     },[])
+
+    const toggleReplyInput = (commentId) => {
+      setShowReplyInput((prev) => ({
+        ...prev,
+        [commentId]: !prev[commentId],
+      }));
+    };
+
+      const deleteComment = (id) => {
+        axiosClient
+          .delete(`/comment/${id}`)
+          .then((response) => {
+            const deletedIndex = comments.findIndex(
+              (comment) => comment.id === id
+            );
+            const updatedComments = [...comments];
+            updatedComments.splice(deletedIndex, 1);
+            setComments(updatedComments);
+          })
+          .catch((error) => {
+            console.error("Error deleting product:", error);
+          });
+      };
 
    
   return (
@@ -58,7 +83,13 @@ const CommentModal = ({isOpen, closeModal, post}) => {
                 <div>
                   {comment.user && (
                     <div className="bg-gray-200 rounded-xl p-3">
-                      <p className="font-medium">{comment.user.name}</p>
+                      <div className="flex items-center justify-between">
+                        <p className="font-medium">{comment.user.name}</p>
+                        <p className="text-sm text-gray-400">
+                          {FormatTimeAgo(comment.created_at)}
+                        </p>
+                      </div>
+
                       <p>{comment.body}</p>
                     </div>
                   )}
@@ -68,14 +99,33 @@ const CommentModal = ({isOpen, closeModal, post}) => {
                         <FavoriteBorderIcon />
                         <p>Like</p>
                       </div>
-                      <div className="flex items-center gap-2">
+                      <div
+                        className="flex items-center gap-2 cursor-pointer"
+                        onClick={() => toggleReplyInput(comment.id)}
+                      >
                         <ReplyIcon />
                         <p>Reply</p>
                       </div>
+                      <div
+                        className="flex items-center gap-2 cursor-pointer"
+                        onClick={() => deleteComment(comment.id)}
+                      >
+                        <DeleteIcon />
+                        <p>Delete</p>
+                      </div>
+                      <div className="flex items-center gap-2 cursor-pointer">
+                        <EditIcon />
+                        <p>Edit</p>
+                      </div>
                     </div>
-                    <p className="text-sm text-gray-400">
-                      {FormatTimeAgo(comment.created_at)}
-                    </p>
+                    {showReplyInput[comment.id] && (
+                      <CommentInputGroup
+                        postId={post.id}
+                        setComments={setComments}
+                        comments={comments}
+                        parentCommentId={comment.id}
+                      />
+                    )}
                   </div>
                 </div>
               </div>
