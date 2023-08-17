@@ -12,7 +12,7 @@ import axiosClient from '../../Axios/axiosClient';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchPosts } from '../../Redux/posts';
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-
+import BookmarkIcon from "@mui/icons-material/Bookmark";
 
 const Post = ({props, openModal, isOpen}) => {
   const timeAgo = FormatTimeAgo(props.created_at);
@@ -60,7 +60,30 @@ const Post = ({props, openModal, isOpen}) => {
   const addTofavorites = (id) => {
     axiosClient.post(`/posts/${id}/favorite`)
     .then((res) => {
-      console.log(res)
+      console.log(res,"response")
+      if(res.data === "favorited"){
+        const updatedPosts = posts.map((post) => {
+          if (post.id === id) {
+            return {
+              ...post,
+              has_favorited: true,
+            };
+          }
+          return post;
+        });
+        dispatch(fetchPosts(updatedPosts));
+      }else{
+        const updatedPosts = posts.map((post) => {
+          if (post.id === id) {
+            return {
+              ...post,
+              has_favorited: false,
+            };
+          }
+          return post;
+        });
+        dispatch(fetchPosts(updatedPosts));
+      }
     })
     .catch((err) => {
       console.log(err)
@@ -68,6 +91,7 @@ const Post = ({props, openModal, isOpen}) => {
   }
 
 
+  console.log(props)
 
   return (
     <>
@@ -117,7 +141,11 @@ const Post = ({props, openModal, isOpen}) => {
             </div>
           </div>
           <button onClick={() => addTofavorites(props.id)}>
-            <BookmarkBorderOutlinedIcon />
+            {props.has_favorited ? (
+              <BookmarkIcon sx={{ color: "#6b21a8" }} />
+            ) : (
+              <BookmarkBorderOutlinedIcon />
+            )}
           </button>
         </div>
       </div>
