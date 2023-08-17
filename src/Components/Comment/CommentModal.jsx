@@ -9,6 +9,8 @@ import axiosClient from "../../Axios/axiosClient";
 import FormatTimeAgo from "../FormatTimeAgo";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
+
 
 const style = {
   position: "fixed",
@@ -79,6 +81,41 @@ const CommentModal = ({ isOpen, closeModal, post }) => {
       });
   };
 
+  const upVote = (commentId) => {
+    axiosClient
+      .post(`/comment/upvote/${commentId}`, commentId)
+      .then((res) => {
+        if (res.data === "upVoted") {
+          const updatedComment = comments.map((comment) => {
+            if (comment.id === commentId) {
+              return {
+                ...comment,
+                votes: comment.votes + 1,
+                has_voted: true,
+              };
+            }
+            return comment;
+          });
+          setComments(updatedComment);
+        } else {
+          const updatedComment = comments.map((comment) => {
+            if (comment.id === commentId) {
+              return {
+                ...comment,
+                votes: comment.votes - 1,
+                has_voted: false,
+              };
+            }
+            return comment;
+          });
+          setComments(updatedComment);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
 
 
   const Comment = ({ comment }) => {
@@ -118,8 +155,14 @@ const CommentModal = ({ isOpen, closeModal, post }) => {
 
         <div className="flex items-center gap-4 mt-2">
           <div className="flex items-center gap-2">
-            <FavoriteBorderIcon />
-            <p>Like</p>
+            <button onClick={() => upVote(comment.id)} type="button">
+              {comment.has_voted ? (
+                <FavoriteOutlinedIcon sx={{ color: "red" }} />
+              ) : (
+                <FavoriteBorderIcon />
+              )}
+            </button>
+            <p>{comment.votes} Likes</p>
           </div>
           <div
             className="flex items-center gap-2 cursor-pointer"
