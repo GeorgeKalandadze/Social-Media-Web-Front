@@ -57,6 +57,17 @@ const Post = ({props, openModal, isOpen}) => {
   };
 
 
+  const addTofavorites = (id) => {
+    axiosClient.post(`/posts/${id}/favorite`)
+    .then((res) => {
+      console.log(res)
+    })
+    .catch((err) => {
+      console.log(err)
+    });
+  }
+
+
 
   return (
     <>
@@ -90,7 +101,7 @@ const Post = ({props, openModal, isOpen}) => {
             <div className="flex items-center gap-3">
               <button onClick={() => upVote(props.id)}>
                 {props.has_voted ? (
-                  <FavoriteOutlinedIcon sx={{color:"red"}}/>
+                  <FavoriteOutlinedIcon sx={{ color: "red" }} />
                 ) : (
                   <FavoriteBorderIcon />
                 )}
@@ -105,7 +116,9 @@ const Post = ({props, openModal, isOpen}) => {
               <p>Comments</p>
             </div>
           </div>
-          <BookmarkBorderOutlinedIcon />
+          <button onClick={() => addTofavorites(props.id)}>
+            <BookmarkBorderOutlinedIcon />
+          </button>
         </div>
       </div>
       <CommentModal
