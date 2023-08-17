@@ -7,6 +7,7 @@ import ForgotPassword from './Pages/ForgotPassword'
 import VerifyEmail from './Pages/VerifyEmail'
 import Home from './Pages/Home'
 import LoginWithGoogle from './Pages/LoginWithGoogle'
+import FavoritePosts from "./Pages/FavoritePosts"
 
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
           <Route path='/forgot-password' element={<ForgotPassword/>}/>
           <Route path='/verify-email' element={<VerifyEmail/>}/>
           <Route path='/home' element={<Home/>}/>
+          <Route path='/favorite-posts' element={<FavoritePosts/>}/>
         </Routes>
       </Router>
     </>

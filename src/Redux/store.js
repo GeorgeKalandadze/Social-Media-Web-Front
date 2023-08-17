@@ -4,6 +4,7 @@ import dataReducer from './postDataSlice';
 import userDataReducer from './userDataSlice';
 import postSlice from './posts';
 import selectedPostSlice from './selectedPostDataSlice';
+import favoritedPostsSlice from './favoritedPostsSlice';
 
 
 export const store = configureStore({
@@ -12,7 +13,8 @@ export const store = configureStore({
     postData: dataReducer,
     user: userDataReducer,
     posts: postSlice,
-    selectedPostData: selectedPostSlice
+    selectedPostData: selectedPostSlice,
+    favoritePosts: favoritedPostsSlice
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
