@@ -8,10 +8,22 @@ import IconButton from '@mui/material/IconButton';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import FormatTimeAgo from '../FormatTimeAgo';
 import CommentModal from '../Comment/CommentModal';
+import axiosClient from '../../Axios/axiosClient';
 
 const Post = ({props, openModal, isOpen}) => {
   const timeAgo = FormatTimeAgo(props.created_at);
   const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
+
+  const upVote = (postId) => {
+    axiosClient
+      .post(`/post/upvote/${postId}`, postId)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
 
   return (
@@ -44,7 +56,9 @@ const Post = ({props, openModal, isOpen}) => {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-3">
-              <FavoriteOutlinedIcon />
+              <button onClick={() => upVote(props.id)}>
+                <FavoriteOutlinedIcon />
+              </button>
               <p>0 Likes</p>
             </div>
             <div

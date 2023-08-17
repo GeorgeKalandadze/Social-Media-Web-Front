@@ -48,6 +48,7 @@ const CommentModal = ({ isOpen, closeModal, post }) => {
     }));
   };
 
+
   const deleteComment = (id) => {
     axiosClient
       .delete(`/comment/${id}`)
@@ -61,6 +62,7 @@ const CommentModal = ({ isOpen, closeModal, post }) => {
         console.error("Error deleting comment:", error);
       });
   };
+
 
   const editComment = (id, newText) => {
     axiosClient
@@ -77,12 +79,11 @@ const CommentModal = ({ isOpen, closeModal, post }) => {
       });
   };
 
-  console.log(comments)
+
 
   const Comment = ({ comment }) => {
     return (
       <div className="flex gap-3 flex-col">
-        {/* Comment content */}
         {editingCommentId === comment.id ? (
           <div className="bg-gray-200 rounded-xl p-3 flex gap-2">
             <textarea
@@ -111,19 +112,15 @@ const CommentModal = ({ isOpen, closeModal, post }) => {
                 {FormatTimeAgo(comment.created_at)}
               </p>
             </div>
-            <p>{comment.body}</p>
+            <p className="break-words">{comment.body}</p>
           </div>
         )}
 
-        {/* Like, reply, delete, edit */}
         <div className="flex items-center gap-4 mt-2">
-          {/* Like */}
           <div className="flex items-center gap-2">
             <FavoriteBorderIcon />
             <p>Like</p>
           </div>
-
-          {/* Reply */}
           <div
             className="flex items-center gap-2 cursor-pointer"
             onClick={() => toggleReplyInput(comment.id)}
@@ -132,7 +129,6 @@ const CommentModal = ({ isOpen, closeModal, post }) => {
             <p>Reply</p>
           </div>
 
-          {/* Delete */}
           <div
             className="flex items-center gap-2 cursor-pointer"
             onClick={() => deleteComment(comment.id)}
@@ -140,8 +136,6 @@ const CommentModal = ({ isOpen, closeModal, post }) => {
             <DeleteIcon />
             <p>Delete</p>
           </div>
-
-          {/* Edit */}
           <div
             className="flex items-center gap-2 cursor-pointer"
             onClick={() => {
@@ -154,7 +148,6 @@ const CommentModal = ({ isOpen, closeModal, post }) => {
           </div>
         </div>
 
-        {/* Rendering reply input */}
         {showReplyInput[comment.id] && (
           <CommentInputGroup
             postId={post.id}
@@ -164,7 +157,6 @@ const CommentModal = ({ isOpen, closeModal, post }) => {
           />
         )}
 
-        {/* Rendering reply comments */}
         {comment.replies &&
           comment.replies.length > 0 &&
           comment.replies.map((reply) => (

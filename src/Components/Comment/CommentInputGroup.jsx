@@ -23,6 +23,9 @@ const CommentInputGroup = ({
         .post("/comment/create", commentData)
         .then((res) => {
           console.log(res, "response");
+          // if (res.data.data.parent_comment_id !== null){
+              
+          // }
           setComments([...comments, res.data.data]);
           setCommentBody("");
         })

@@ -43,6 +43,7 @@ const Home = () => {
         console.error("Error deleting product:", error);
       });
   };
+  
 
   const handleClick = (event, index) => {
     const newAnchorElArray = [...anchorEl];
