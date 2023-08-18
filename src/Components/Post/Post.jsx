@@ -24,85 +24,37 @@ const Post = ({props, openModal, isOpen}) => {
   );
   const dispatch = useDispatch()
 
-  const upVote = (postId) => {
-    axiosClient
-      .post(`/post/upvote/${postId}`, postId)
-      .then((res) => {
-        if (res.data === "upVoted") {
-          const updatedPosts = posts.map((post) => {
-            if (post.id === postId) {
-              return {
-                ...post,
-                votes: post.votes + 1,
-                has_voted: true,
-              };
-            }
-            return post;
-          });
-          dispatch(fetchPosts(updatedPosts));
-        } else {
-          const updatedPosts = posts.map((post) => {
-            if (post.id === postId) {
-              return {
-                ...post,
-                votes: post.votes - 1,
-                has_voted: false,
-              };
-            }
-            return post;
-          });
-          dispatch(fetchPosts(updatedPosts));
-        }
-        
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
 
+   const handleVote = (postId, upvote) => {
+     const voteValue = upvote ? 1 : -1;
+     axiosClient
+       .post(`/post/upvote/${postId}`, postId)
+       .then((res) => {
+         const updatedPosts = posts.map((post) =>
+           post.id === postId
+             ? { ...post, votes: post.votes + voteValue, has_voted: upvote }
+             : post
+         );
+         dispatch(fetchPosts(updatedPosts));
+       })
+       .catch((err) => {
+         console.log(err);
+       });
+   };
 
-  const addTofavorites = (id) => {
-    axiosClient.post(`/posts/${id}/favorite`)
-    .then((res) => {
-      console.log(res,"response")
-      if(res.data === "favorited"){
-        const updatedPosts = posts.map((post) => {
-          if (post.id === id) {
-            return {
-              ...post,
-              has_favorited: true,
-            };
-          }
-          return post;
-        });
-        dispatch(fetchPosts(updatedPosts));
-      }else{
-        const updatedPosts = posts.map((post) => {
-          if (post.id === id) {
-            return {
-              ...post,
-              has_favorited: false,
-            };
-          }
-          return post;
-        });
-        dispatch(fetchPosts(updatedPosts));
-        // const deletedIndex = favoritePosts.findIndex(
-        //   (favoritePost) => favoritePost.id === id
-        // );
-        // const favoritePost = [...favoritePosts];
-        // favoritePost.splice(deletedIndex, 1);
-        // dispatch(fetchFavoritedPosts(favoritePost));
-        
-      }
-    })
-    .catch((err) => {
-      console.log(err)
-    });
-  }
-
-
-  console.log(props)
+   const handleFavorite = (id, favorite) => {
+     axiosClient
+       .post(`/posts/${id}/favorite`)
+       .then((res) => {
+         const updatedPosts = posts.map((post) =>
+           post.id === id ? { ...post, has_favorited: favorite } : post
+         );
+         dispatch(fetchPosts(updatedPosts));
+       })
+       .catch((err) => {
+         console.log(err);
+       });
+   };
 
   return (
     <>
@@ -134,7 +86,7 @@ const Post = ({props, openModal, isOpen}) => {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-3">
-              <button onClick={() => upVote(props.id)}>
+              <button onClick={() => handleVote(props.id, !props.has_voted)}>
                 {props.has_voted ? (
                   <FavoriteOutlinedIcon sx={{ color: "red" }} />
                 ) : (
@@ -151,7 +103,9 @@ const Post = ({props, openModal, isOpen}) => {
               <p>Comments</p>
             </div>
           </div>
-          <button onClick={() => addTofavorites(props.id)}>
+          <button
+            onClick={() => handleFavorite(props.id, !props.has_favorited)}
+          >
             {props.has_favorited ? (
               <BookmarkIcon sx={{ color: "#6b21a8" }} />
             ) : (
