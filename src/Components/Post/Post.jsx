@@ -10,7 +10,7 @@ import FormatTimeAgo from '../FormatTimeAgo';
 import CommentModal from '../Comment/CommentModal';
 import axiosClient from '../../Axios/axiosClient';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchPosts } from '../../Redux/posts';
+import { fetchPosts, updatePostAfterFavorite, updatePostAfterVote } from '../../Redux/posts';
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import { fetchFavoritedPosts } from '../../Redux/favoritedPostsSlice';
@@ -30,12 +30,13 @@ const Post = ({props, openModal, isOpen}) => {
      axiosClient
        .post(`/post/upvote/${postId}`, postId)
        .then((res) => {
-         const updatedPosts = posts.map((post) =>
-           post.id === postId
-             ? { ...post, votes: post.votes + voteValue, has_voted: upvote }
-             : post
+         dispatch(
+           updatePostAfterVote({
+             id: postId,
+             voteValue: voteValue,
+             upvote: upvote,
+           })
          );
-         dispatch(fetchPosts(updatedPosts));
        })
        .catch((err) => {
          console.log(err);
@@ -46,20 +47,24 @@ const Post = ({props, openModal, isOpen}) => {
      axiosClient
        .post(`/posts/${id}/favorite`)
        .then((res) => {
-         const updatedPosts = posts.map((post) =>
-           post.id === id ? { ...post, has_favorited: favorite } : post
+        
+         dispatch(
+           updatePostAfterFavorite({
+             id: id,
+             favorite: favorite,
+           })
          );
-         dispatch(fetchPosts(updatedPosts));
-         const updatedFavoritePost = {
-           ...favoritePosts.find((post) => post.id === id),
-           has_favorited: favorite,
-         };
-         dispatch(fetchFavoritedPosts([...favoritePosts, updatedFavoritePost]));
        })
        .catch((err) => {
          console.log(err);
        });
    };
+
+  //  const updatedFavoritePost = {
+  //    ...favoritePosts.find((post) => post.id === id),
+  //    has_favorited: favorite,
+  //  };
+  //  dispatch(fetchFavoritedPosts([...favoritePosts, updatedFavoritePost]));
 
   return (
     <>
