@@ -50,6 +50,11 @@ const Post = ({props, openModal, isOpen}) => {
            post.id === id ? { ...post, has_favorited: favorite } : post
          );
          dispatch(fetchPosts(updatedPosts));
+         const updatedFavoritePost = {
+           ...favoritePosts.find((post) => post.id === id),
+           has_favorited: favorite,
+         };
+         dispatch(fetchFavoritedPosts([...favoritePosts, updatedFavoritePost]));
        })
        .catch((err) => {
          console.log(err);
