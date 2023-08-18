@@ -75,7 +75,7 @@ const FavoritePosts = () => {
     return false;
   };
 
-  console.log(favoritePosts.favoritePosts, "favorites");
+  
   return (
     <AuthenticatedLayout>
       <div className="flex flex-col gap-6">
