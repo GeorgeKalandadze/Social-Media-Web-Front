@@ -13,11 +13,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchPosts } from '../../Redux/posts';
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
+import { fetchFavoritedPosts } from '../../Redux/favoritedPostsSlice';
 
 const Post = ({props, openModal, isOpen}) => {
   const timeAgo = FormatTimeAgo(props.created_at);
   const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
   const posts = useSelector((state) => state.posts.posts.data);
+  const favoritePosts = useSelector(
+    (state) => state.favoritePosts.favoritePosts
+  );
   const dispatch = useDispatch()
 
   const upVote = (postId) => {
@@ -83,6 +87,13 @@ const Post = ({props, openModal, isOpen}) => {
           return post;
         });
         dispatch(fetchPosts(updatedPosts));
+        // const deletedIndex = favoritePosts.findIndex(
+        //   (favoritePost) => favoritePost.id === id
+        // );
+        // const favoritePost = [...favoritePosts];
+        // favoritePost.splice(deletedIndex, 1);
+        // dispatch(fetchFavoritedPosts(favoritePost));
+        
       }
     })
     .catch((err) => {
