@@ -34,6 +34,7 @@ const postsSlice = createSlice({
       );
       state.posts.data = updatedPosts;
     },
+
     updatePostAfterFavorite: (state, action) => {
       const updatedPosts = state.posts.data.map((post) =>
         post.id === action.payload.id
@@ -42,7 +43,27 @@ const postsSlice = createSlice({
       );
       state.posts.data = updatedPosts;
     },
+
+    removeDeletedPost: (state, action) => {
+      state.posts.data = state.posts.data.filter(
+        (post) => post.id !== action.payload
+      );
+    },
+
+    updatePostAfterCreateOrUpdate: (state, action) => {
+      const { postData, isUpdate } = action.payload;
+
+      if (isUpdate) {
+        const updatedPosts = state.posts.data.map((post) =>
+          post.id === postData.id ? postData : post
+        );
+        state.posts.data = updatedPosts;
+      } else {
+        state.posts.data = [...state.posts.data, postData];
+      }
+    },
   },
+
   extraReducers: (builder) => {
     builder
       .addCase(fetchPosts.pending, (state) => {
@@ -60,5 +81,11 @@ const postsSlice = createSlice({
   },
 });
 
-export const { updatePostAfterVote, updatePostAfterFavorite } = postsSlice.actions;
+export const { 
+  updatePostAfterVote, 
+  updatePostAfterFavorite, 
+  removeDeletedPost, 
+  updatePostAfterCreateOrUpdate 
+} = postsSlice.actions;
+
 export default postsSlice.reducer

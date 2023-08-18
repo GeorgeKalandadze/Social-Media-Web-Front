@@ -6,7 +6,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Menu, MenuItem } from "@mui/material";
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchPosts } from '../Redux/posts'
+import { fetchPosts, removeDeletedPost } from '../Redux/posts'
 import { openModal } from "../Redux/postModalSlice";
 import { updateSelectPost } from "../Redux/selectedPostDataSlice";
 import { fetchUser } from '../Redux/userDataSlice';
@@ -28,19 +28,14 @@ const Home = () => {
    }, []);
 
 
-  const deletePost= (postId) => {
+  const deletePost = (postId) => {
     axiosClient
       .delete(`/post/${postId}`)
       .then((response) => {
-        const deletedIndex = posts.posts.data.findIndex(
-          (post) => post.id === postId
-        );
-        const updatedPosts = [...posts.posts.data];
-        updatedPosts.splice(deletedIndex, 1);
-        dispatch(fetchPosts(updatedPosts));
+        dispatch(removeDeletedPost(postId));
       })
       .catch((error) => {
-        console.error("Error deleting product:", error);
+        console.error("Error deleting post:", error);
       });
   };
   
