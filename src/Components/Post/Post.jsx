@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchPosts, updatePostAfterFavorite, updatePostAfterVote } from '../../Redux/posts';
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
-import { fetchFavoritedPosts } from '../../Redux/favoritedPostsSlice';
+import { fetchFavoritedPosts, removeFavoritePost } from '../../Redux/favoritedPostsSlice';
 
 const Post = ({props, openModal, isOpen}) => {
   const timeAgo = FormatTimeAgo(props.created_at);
@@ -37,6 +37,7 @@ const Post = ({props, openModal, isOpen}) => {
              upvote: upvote,
            })
          );
+         
        })
        .catch((err) => {
          console.log(err);
@@ -54,6 +55,7 @@ const Post = ({props, openModal, isOpen}) => {
              favorite: favorite,
            })
          );
+         dispatch(removeFavoritePost(id));
        })
        .catch((err) => {
          console.log(err);

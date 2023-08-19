@@ -22,6 +22,13 @@ export const fetchFavoritedPosts = createAsyncThunk("posts/fetchFavoritedPosts",
 const favoritePostsSlice = createSlice({
   name: "favoritePosts",
   initialState: initialData,
+  reducers: {
+    removeFavoritePost: (state, action) => {
+      state.favoritePosts = state.favoritePosts.filter(
+        (post) => post.id !== action.payload
+      );
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchFavoritedPosts.pending, (state) => {
@@ -38,5 +45,7 @@ const favoritePostsSlice = createSlice({
       });
   },
 });
+
+export const { removeFavoritePost } = favoritePostsSlice.actions
 
 export default favoritePostsSlice.reducer;
