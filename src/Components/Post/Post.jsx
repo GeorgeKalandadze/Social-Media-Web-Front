@@ -10,53 +10,63 @@ import FormatTimeAgo from '../FormatTimeAgo';
 import CommentModal from '../Comment/CommentModal';
 import axiosClient from '../../Axios/axiosClient';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchPosts } from '../../Redux/posts';
+import { fetchPosts, updatePostAfterFavorite, updatePostAfterVote } from '../../Redux/posts';
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-
+import BookmarkIcon from "@mui/icons-material/Bookmark";
+import { fetchFavoritedPosts, removeFavoritePost } from '../../Redux/favoritedPostsSlice';
 
 const Post = ({props, openModal, isOpen}) => {
   const timeAgo = FormatTimeAgo(props.created_at);
   const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
   const posts = useSelector((state) => state.posts.posts.data);
+  const favoritePosts = useSelector(
+    (state) => state.favoritePosts.favoritePosts
+  );
   const dispatch = useDispatch()
 
-  const upVote = (postId) => {
-    axiosClient
-      .post(`/post/upvote/${postId}`, postId)
-      .then((res) => {
-        if (res.data === "upVoted") {
-          const updatedPosts = posts.map((post) => {
-            if (post.id === postId) {
-              return {
-                ...post,
-                votes: post.votes + 1,
-                has_voted: true,
-              };
-            }
-            return post;
-          });
-          dispatch(fetchPosts(updatedPosts));
-        } else {
-          const updatedPosts = posts.map((post) => {
-            if (post.id === postId) {
-              return {
-                ...post,
-                votes: post.votes - 1,
-                has_voted: false,
-              };
-            }
-            return post;
-          });
-          dispatch(fetchPosts(updatedPosts));
-        }
+
+   const handleVote = (postId, upvote) => {
+     const voteValue = upvote ? 1 : -1;
+     axiosClient
+       .post(`/post/upvote/${postId}`, postId)
+       .then((res) => {
+         dispatch(
+           updatePostAfterVote({
+             id: postId,
+             voteValue: voteValue,
+             upvote: upvote,
+           })
+         );
+         
+       })
+       .catch((err) => {
+         console.log(err);
+       });
+   };
+
+   const handleFavorite = (id, favorite) => {
+     axiosClient
+       .post(`/posts/${id}/favorite`)
+       .then((res) => {
         
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+         dispatch(
+           updatePostAfterFavorite({
+             id: id,
+             favorite: favorite,
+           })
+         );
+         dispatch(removeFavoritePost(id));
+       })
+       .catch((err) => {
+         console.log(err);
+       });
+   };
 
-
+  //  const updatedFavoritePost = {
+  //    ...favoritePosts.find((post) => post.id === id),
+  //    has_favorited: favorite,
+  //  };
+  //  dispatch(fetchFavoritedPosts([...favoritePosts, updatedFavoritePost]));
 
   return (
     <>
@@ -88,9 +98,9 @@ const Post = ({props, openModal, isOpen}) => {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-3">
-              <button onClick={() => upVote(props.id)}>
+              <button onClick={() => handleVote(props.id, !props.has_voted)}>
                 {props.has_voted ? (
-                  <FavoriteOutlinedIcon sx={{color:"red"}}/>
+                  <FavoriteOutlinedIcon sx={{ color: "red" }} />
                 ) : (
                   <FavoriteBorderIcon />
                 )}
@@ -105,7 +115,15 @@ const Post = ({props, openModal, isOpen}) => {
               <p>Comments</p>
             </div>
           </div>
-          <BookmarkBorderOutlinedIcon />
+          <button
+            onClick={() => handleFavorite(props.id, !props.has_favorited)}
+          >
+            {props.has_favorited ? (
+              <BookmarkIcon sx={{ color: "#6b21a8" }} />
+            ) : (
+              <BookmarkBorderOutlinedIcon />
+            )}
+          </button>
         </div>
       </div>
       <CommentModal

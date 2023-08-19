@@ -1,44 +1,49 @@
-import React, { useEffect, useState } from 'react'
-import axiosClient from '../Axios/axiosClient'
-import AuthenticatedLayout from '../Layouts/AuthenticatedLayout'
-import Post from '../Components/Post/Post'
+import React, { useEffect, useState } from "react";
+import axiosClient from "../Axios/axiosClient";
+import AuthenticatedLayout from "../Layouts/AuthenticatedLayout";
+import Post from "../Components/Post/Post";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Menu, MenuItem } from "@mui/material";
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchPosts, removeDeletedPost } from '../Redux/posts'
+import { useDispatch, useSelector } from "react-redux";
+import { fetchPosts } from "../Redux/posts";
 import { openModal } from "../Redux/postModalSlice";
 import { updateSelectPost } from "../Redux/selectedPostDataSlice";
-import { fetchUser } from '../Redux/userDataSlice';
+import { fetchUser } from "../Redux/userDataSlice";
+import { fetchFavoritedPosts } from "../Redux/favoritedPostsSlice";
 
-const Home = () => {
-  const posts = useSelector((state) => state.posts);
+const FavoritePosts = () => {
+  const favoritePosts = useSelector(
+    (state) => state.favoritePosts.favoritePosts
+  );
   const [anchorEl, setAnchorEl] = useState([]);
   const open = Boolean(anchorEl);
   const userData = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(fetchFavoritedPosts());
+  }, []);
 
   useEffect(() => {
-    dispatch(fetchPosts());
-  }, [])
-
-   useEffect(() => {
-     dispatch(fetchUser());
-   }, []);
-
+    dispatch(fetchUser());
+  }, []);
 
   const deletePost = (postId) => {
     axiosClient
       .delete(`/post/${postId}`)
       .then((response) => {
-        dispatch(removeDeletedPost(postId));
+        const deletedIndex = posts.posts.data.findIndex(
+          (post) => post.id === postId
+        );
+        const updatedPosts = [...posts.posts.data];
+        updatedPosts.splice(deletedIndex, 1);
+        dispatch(fetchPosts(updatedPosts));
       })
       .catch((error) => {
-        console.error("Error deleting post:", error);
+        console.error("Error deleting product:", error);
       });
   };
-  
 
   const handleClick = (event, index) => {
     const newAnchorElArray = [...anchorEl];
@@ -55,10 +60,8 @@ const Home = () => {
   const openUpdateModal = (product) => {
     dispatch(openModal());
     dispatch(updateSelectPost(product));
-  }
+  };
 
-
- 
   const handlePermission = (post) => {
     if (
       userData &&
@@ -76,8 +79,8 @@ const Home = () => {
   return (
     <AuthenticatedLayout>
       <div className="flex flex-col gap-6">
-        {posts.posts.data &&
-          posts.posts.data.map((post, index) => (
+        {favoritePosts &&
+          favoritePosts.map((post, index) => (
             <>
               <Post props={post} openModal={handleClick} isOpen={open} />
               {handlePermission(post) && (
@@ -112,6 +115,6 @@ const Home = () => {
       </div>
     </AuthenticatedLayout>
   );
-}
+};
 
-export default Home
+export default FavoritePosts;

@@ -11,6 +11,7 @@ import { useDispatch } from 'react-redux';
 import { openModal } from '../../Redux/postModalSlice';
 import { clearSelectPost} from '../../Redux/selectedPostDataSlice';
 import { clearPostData } from '../../Redux/postDataSlice';
+import { Link } from 'react-router-dom';
 
 
 const LeftSide = () => {
@@ -35,11 +36,15 @@ const LeftSide = () => {
           </div>
         </div>
         <div className="flex flex-col  ">
-          <Section bgImg={HomeIcon} text={"Home"} className="rounded-t-xl" />
+          <Link to="/home">
+            <Section bgImg={HomeIcon} text={"Home"} className="rounded-t-xl" />
+          </Link>
           <Section bgImg={NotificationIcon} text={"Notifications"} />
           <Section bgImg={FriendsIcon} text={"Friends"} />
           <Section bgImg={ThemeIcon} text={"Themes"} />
-          <Section bgImg={BookmarksIcon} text={"Bookmarks"} />
+          <Link to="/favorite-posts">
+            <Section bgImg={BookmarksIcon} text={"Bookmarks"} />
+          </Link>
           <Section
             bgImg={AnalyticIcon}
             text={"Analytic"}
@@ -48,7 +53,7 @@ const LeftSide = () => {
         </div>
         <button
           className="rounded-2xl bg-purple-800  text-white font-medium text-[20px] py-3 shadow-md"
-          onClick={() => openPostModal() }
+          onClick={() => openPostModal()}
         >
           Create Post
         </button>

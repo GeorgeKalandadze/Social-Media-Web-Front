@@ -131,14 +131,14 @@ const UploadImages = ({selectedImages = []}) => {
               <button
                 type="button"
                 className="mt-6 bg-[#423dce] text-white px-6 py-3 font-medium rounded"
-                onClick={handleAddImagesClick} // Open file input when button is clicked
+                onClick={handleAddImagesClick}
               >
                 Add Images
               </button>
               <input
                 type="file"
                 ref={wrapperRef}
-                style={{ display: "none" }} // Hide the actual file input visually
+                style={{ display: "none" }} 
                 onChange={onFileDrop}
                 multiple
               />
