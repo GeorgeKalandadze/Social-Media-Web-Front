@@ -10,6 +10,7 @@ import { fetchPosts, removeDeletedPost } from '../Redux/posts'
 import { openModal } from "../Redux/postModalSlice";
 import { updateSelectPost } from "../Redux/selectedPostDataSlice";
 import { fetchUser } from '../Redux/userDataSlice';
+import Pusher from 'pusher-js'
 
 const Home = () => {
   const posts = useSelector((state) => state.posts);
@@ -72,6 +73,33 @@ const Home = () => {
     return false;
   };
 
+  // useEffect(() => {
+  //   const channel = echo.private('like-channel');
+
+  //   channel.listen("LikeNotification", (data) => {
+  //     console.log("Received Like Notification:", data);
+  //   });
+
+  //   return () => {
+  //     channel.stopListening("LikeNotification");
+  //   };
+
+  // },[])
+
+
+  // useEffect(() => {
+
+  //   Pusher.logToConsole = true;
+
+  //   const pusher = new Pusher(import.meta.env.VITE_PUSHER_APP_KEY, {
+  //     cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
+  //   });
+
+  //   const channel = pusher.subscribe("like-channel");
+  //   channel.bind("LikeNotification", function (data) {
+  //     console.log(data, "post is liked")
+  //   });
+  // },[])
   
   return (
     <AuthenticatedLayout>

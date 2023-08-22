@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import PersonAvatar from '../../assets/personimg.jpg';
 import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
 import TextsmsOutlinedIcon from '@mui/icons-material/TextsmsOutlined';
@@ -10,10 +10,12 @@ import FormatTimeAgo from '../FormatTimeAgo';
 import CommentModal from '../Comment/CommentModal';
 import axiosClient from '../../Axios/axiosClient';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchPosts, updatePostAfterFavorite, updatePostAfterVote } from '../../Redux/posts';
+import { updatePostAfterFavorite, updatePostAfterVote } from '../../Redux/posts';
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
-import { fetchFavoritedPosts, removeFavoritePost } from '../../Redux/favoritedPostsSlice';
+import {removeFavoritePost } from '../../Redux/favoritedPostsSlice';
+import Pusher from "pusher-js";
+import { echo } from '../../Config/Broadcasting';
 
 const Post = ({props, openModal, isOpen}) => {
   const timeAgo = FormatTimeAgo(props.created_at);
@@ -67,6 +69,35 @@ const Post = ({props, openModal, isOpen}) => {
   //    has_favorited: favorite,
   //  };
   //  dispatch(fetchFavoritedPosts([...favoritePosts, updatedFavoritePost]));
+
+
+
+  // useEffect(() => {
+  //   const pusher = new Pusher(import.meta.env.VITE_PUSHER_APP_KEY, {
+  //     cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
+  //   });
+
+  //   const channel = pusher.subscribe("like-channel");
+  //   channel.bind("new-like", function (data) {
+  //     console.log("Received like event:", data);
+  //   });
+  //   return () => {
+  //     pusher.unsubscribe("like-channel");
+  //   };
+  // }, []);
+
+  useEffect(() => {
+    const channel = echo.private(`like-channel`);
+
+    channel.listen("new-like", (data) => {
+      console.log("Received like event:", data);
+   
+    });
+
+    return () => {
+      channel.stopListening(".new-like");
+    };
+  }, []);
 
   return (
     <>
