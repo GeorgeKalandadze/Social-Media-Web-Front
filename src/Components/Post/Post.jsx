@@ -72,30 +72,25 @@ const Post = ({props, openModal, isOpen}) => {
 
 
 
-  // useEffect(() => {
-  //   const pusher = new Pusher(import.meta.env.VITE_PUSHER_APP_KEY, {
-  //     cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
-  //   });
+  useEffect(() => {
+    const channel = echo.private(`like-channel`);
+    channel.listen("new-like", (data) => {
+      console.log("Received like event:", data);
+    });
 
-  //   const channel = pusher.subscribe("like-channel");
-  //   channel.bind("new-like", function (data) {
-  //     console.log("Received like event:", data);
-  //   });
-  //   return () => {
-  //     pusher.unsubscribe("like-channel");
-  //   };
-  // }, []);
+    return () => {
+      channel.stopListening("new-like");
+    };
+  }, []);
 
   useEffect(() => {
     const channel = echo.private(`like-channel`);
-
     channel.listen("new-like", (data) => {
       console.log("Received like event:", data);
    
     });
-
     return () => {
-      channel.stopListening(".new-like");
+      channel.stopListening("new-like");
     };
   }, []);
 
