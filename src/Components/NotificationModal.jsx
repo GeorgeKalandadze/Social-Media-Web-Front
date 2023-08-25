@@ -21,7 +21,10 @@ const style = {
 const NotificationModal = ({open, close}) => {
   return (
     <div>
-      <Modal open={open}>
+      <Modal 
+        open={open}
+        onClose={close}
+      >
         <Box sx={style}>
           <div className="flex justify-between">
             <h1 className="font-medium">
