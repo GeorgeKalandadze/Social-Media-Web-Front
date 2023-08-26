@@ -16,14 +16,12 @@ import BookmarkIcon from "@mui/icons-material/Bookmark";
 import {removeFavoritePost } from '../../Redux/favoritedPostsSlice';
 import Pusher from "pusher-js";
 import { echo } from '../../Config/Broadcasting';
+import { updateNotifications } from '../../Redux/notificationsSlice';
 
 const Post = ({props, openModal, isOpen}) => {
   const timeAgo = FormatTimeAgo(props.created_at);
   const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
-  const posts = useSelector((state) => state.posts.posts.data);
-  const favoritePosts = useSelector(
-    (state) => state.favoritePosts.favoritePosts
-  );
+  const notifications = useSelector((state) => state.notifications);
   const dispatch = useDispatch()
 
 
@@ -71,29 +69,21 @@ const Post = ({props, openModal, isOpen}) => {
   //  dispatch(fetchFavoritedPosts([...favoritePosts, updatedFavoritePost]));
 
 
+   console.log(notifications,"nott");
 
   useEffect(() => {
-    const channel = echo.private(`like-channel`);
-    channel.listen("new-like", (data) => {
-      console.log("Received like event:", data);
+    const likeChannel = echo.private("like-channel." + props.id);
+
+    likeChannel.listen(".new-like", (data) => {
+      console.log("Like notification received:", data);
+      dispatch(updateNotifications(data))
     });
 
     return () => {
-      channel.stopListening("new-like");
+      likeChannel.stopListening(".new-like");
     };
   }, []);
-
-  useEffect(() => {
-    const channel = echo.private(`like-channel`);
-    channel.listen("new-like", (data) => {
-      console.log("Received like event:", data);
-   
-    });
-    return () => {
-      channel.stopListening("new-like");
-    };
-  }, []);
-
+  
   return (
     <>
       <div className="w-full rounded-xl bg-gray-100 p-4 flex flex-col gap-4 ">
