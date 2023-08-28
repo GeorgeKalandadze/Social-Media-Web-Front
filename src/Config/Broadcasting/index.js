@@ -16,7 +16,7 @@ const echoConfig = {
   key: import.meta.env.VITE_PUSHER_APP_KEY,
   cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
   encrypted: false,
-  // authEndpoint: `${import.meta.env.VITE_API_BASE_URL}/broadcasting/auth`,
+  // authEndpoint: `${import.meta.env.VITE_API_BASE_URL}/api/broadcasting/auth`,
   authorizer: (channel, options) => {
     return {
         authorize: (socketId, callback) => {

@@ -21,9 +21,8 @@ import { updateNotifications } from '../../Redux/notificationsSlice';
 const Post = ({props, openModal, isOpen}) => {
   const timeAgo = FormatTimeAgo(props.created_at);
   const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
-  const notifications = useSelector((state) => state.notifications);
+  const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch()
-
 
    const handleVote = (postId, upvote) => {
      const voteValue = upvote ? 1 : -1;
@@ -37,6 +36,11 @@ const Post = ({props, openModal, isOpen}) => {
              upvote: upvote,
            })
          );
+         const likeChannel = echo.private("like-channel." + postId);
+         likeChannel.listen(".new-like", (data) => {
+           console.log("Like notification received:", data);
+           dispatch(updateNotifications(data));
+         });
          
        })
        .catch((err) => {
@@ -69,20 +73,23 @@ const Post = ({props, openModal, isOpen}) => {
   //  dispatch(fetchFavoritedPosts([...favoritePosts, updatedFavoritePost]));
 
 
-   console.log(notifications,"nott");
 
-  useEffect(() => {
-    const likeChannel = echo.private("like-channel." + props.id);
 
-    likeChannel.listen(".new-like", (data) => {
-      console.log("Like notification received:", data);
-      dispatch(updateNotifications(data))
-    });
+  // useEffect(() => {
+  //   const likeChannel = echo.private("like-channel." + props.id);
+  
+  //   likeChannel.listen(".new-like", (data) => {
+  //     console.log("Like notification received:", data);
+  //     dispatch(updateNotifications(data))
+  //   });
 
-    return () => {
-      likeChannel.stopListening(".new-like");
-    };
-  }, []);
+  //   return () => {
+  //     likeChannel.stopListening(".new-like");
+  //   };
+  // }, [id]);
+
+
+
   
   return (
     <>
