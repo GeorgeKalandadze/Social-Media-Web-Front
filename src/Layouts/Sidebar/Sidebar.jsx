@@ -3,46 +3,32 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import SidebarMenu from "./SidebarMenu";
 import MenuIcon from "@mui/icons-material/Menu";
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
+import BookmarkBorderOutlinedIcon from "@mui/icons-material/BookmarkBorderOutlined";
+import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
+import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutlined";
 const routes = [
   {
-    path: "/",
-    name: "Dashboard",
-
+    path: "/home",
+    name: "Home",
+    icon: <HomeOutlinedIcon />,
   },
   {
-    path: "/users",
-    name: "Users",
+    path: "/favorite-posts",
+    name: "Bookmarks",
+    icon: <BookmarkBorderOutlinedIcon />,
   },
   {
-    path: "/messages",
-    name: "Messages",
+    path: "/notifications",
+    name: "Notifications",
+    icon: <NotificationsOutlinedIcon />,
   },
   {
     path: "/analytics",
     name: "Analytics",
+    icon: <PieChartOutlineOutlinedIcon/>
   },
-  {
-    path: "/file-manager",
-    name: "File Manager",
-    subRoutes: [
-      {
-        path: "/settings/profile",
-        name: "Profile ",
-      },
-      {
-        path: "/settings/2fa",
-        name: "2FA",
-      },
-      {
-        path: "/settings/billing",
-        name: "Billing",
-      },
-    ],
-  },
-  {
-    path: "/order",
-    name: "Order",
-  },
+
   {
     path: "/settings",
     name: "Settings",
@@ -62,10 +48,7 @@ const routes = [
       },
     ],
   },
-  {
-    path: "/saved",
-    name: "Saved",
-  },
+ 
 ];
 
 const SideBar = ({ children }) => {
