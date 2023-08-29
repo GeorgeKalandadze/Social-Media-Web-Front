@@ -107,7 +107,7 @@ const SideBar = ({ children }) => {
 
   return (
     <>
-      <div className="main-container  block sm:hidden ">
+      <div className="main-container block sm:hidden ">
         <motion.div
           animate={{
             width: isOpen ? "200px" : "45px",

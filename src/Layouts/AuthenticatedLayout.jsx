@@ -20,10 +20,12 @@ const AuthenticatedLayout = ({children}) => {
       <Navbar />
       <PostForm open={isPostModalOpen} close={() => handleClose()} />
       <div
-        className="py-4 px-[30px]  grid grid-cols-[22vw,auto,22vw] gap-x-8 
-        lg:px-[100px] grid grid-cols-[18vw,auto,22vw] 
-        md:grid grid-cols-[1fr, 2fr] 
-        sm:grid "
+        className="
+          py-4 px-[10px] grid grid-cols-[auto,auto]  gap-x-8 
+          lg:py-4 px-[100px] lg:grid-cols-[18vw,auto,22vw] 
+          md:grid-cols-[22vw,auto,22vw] 
+          sm:px-[30px] grid grid-cols-[1fr,2fr]
+          bg-red-500 sm:bg-yellow-500 md:bg-blue-500 lg:bg-green-500 "
       >
         <LeftSide />
         <SideBar />
