@@ -30,7 +30,7 @@ const NotificationModal = ({open, close}) => {
             <h1 className="font-medium">
               All Notification{" "}
               <span className="bg-[#ffc107] text-white px-2 py-0.5 rounded-lg ml-2">
-                0
+                {notifications.length}
               </span>
             </h1>
             <button className="text-[#45a7f5] underline ">

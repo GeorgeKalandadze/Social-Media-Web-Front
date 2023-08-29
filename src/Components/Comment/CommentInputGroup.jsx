@@ -18,7 +18,6 @@ const CommentInputGroup = ({
 
   const makeComment = (e) => {
     e.preventDefault();
-    if (commentBody) {
       const commentData = {
         body: commentBody,
         post_id: postId,
@@ -27,21 +26,18 @@ const CommentInputGroup = ({
       axiosClient
         .post("/comment/create", commentData)
         .then((res) => {
-          // if (res.data.data.parent_comment_id !== null){
-              
-          // }
-          setComments([...comments, res.data.data]);
-          setCommentBody("");
           const commentChannel = echo.private("comment-channel." + postId);
           commentChannel.listen(".new-comment", (data) => {
             console.log("comment notification received:", data);
             dispatch(updateNotifications(data));
           });
+          setComments([...comments, res.data.data]);
+          setCommentBody("");
+          
         })
         .catch((err) => {
           console.log(err);
         });
-    }
   };
 
 
