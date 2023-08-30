@@ -26,7 +26,7 @@ const AuthenticatedLayout = ({children}) => {
           lg:px-[100px] lg:grid-cols-[18vw,auto,22vw] 
           md:grid-cols-[22vw,auto,22vw] 
           sm:grid-cols-[1fr,2fr]  sm:px-[30px] sm:py-4
-          bg-red-500 sm:bg-yellow-500 md:bg-blue-500 lg:bg-green-500 "
+         "
       >
         <LeftSide />
         <SideBar />

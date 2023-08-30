@@ -2,8 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+
 .sidebar {
-  background: rgb(0, 7, 61);
+  background: #262626;
   color: white;
   height: 100vh;
   z-index: 10;
@@ -17,7 +18,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 15px 10px;
+  padding: 35px 10px;
 }
 .logo {
   font-size: 18px;
@@ -42,7 +43,6 @@
   margin-left: 10px;
   border-radius: 5px;
   background: rgb(238, 238, 238);
-
   color: white;
 }
 
@@ -50,15 +50,16 @@
   margin-top: 15px;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 20px;
+ 
 }
 .link {
   display: flex;
   color: white;
   gap: 10px;
   padding: 5px 10px;
-  border-right: 4px solid transparent;
   transition: 0.2s cubic-bezier(0.6, -0.28, 0.735, 0.045);
+  
 }
 .link:hover {
   border-right: 4px solid white;
@@ -66,8 +67,8 @@
   transition: 0.2s cubic-bezier(0.6, -0.28, 0.735, 0.045);
 }
 .active {
-  border-right: 4px solid white;
-  background: rgb(45, 51, 89);
+  border-radius: 4px;
+  background: #3a3a3a;
 }
 .link_text {
   white-space: nowrap;
@@ -98,7 +99,7 @@
 
 @media screen and (max-width: 640px) {
   .blurred {
-  filter: blur(8px); /* You can adjust the blur intensity */
-  transition: filter 0.3s ease; /* You might want to add a smooth transition */
+  filter: blur(8px);
+  transition: filter 0.3s ease;
 }
 }

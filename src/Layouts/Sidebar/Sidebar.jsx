@@ -9,6 +9,10 @@ import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined
 import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutlined";
 import { useDispatch, useSelector } from "react-redux";
 import { closeSidebar, openSidebar } from "../../Redux/sidebarSlice";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import PersonAvatar from "../../assets/personimg.jpg";
+
 const routes = [
   {
     path: "/home",
@@ -54,10 +58,9 @@ const routes = [
 ];
 
 const SideBar = ({ children }) => {
-  // const [isOpen, setIsOpen] = useState(false);
-  // const toggle = () => setIsOpen(!isOpen);
   const isOpenSidebar = useSelector((state) => state.sidebar.isOpenSidebar);
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.user);
 
   const toggleSidebar = () => {
     if (isOpenSidebar) {
@@ -66,6 +69,8 @@ const SideBar = ({ children }) => {
       dispatch(openSidebar());
     }
   };
+
+
   const inputAnimation = {
     hidden: {
       width: 0,
@@ -100,12 +105,14 @@ const SideBar = ({ children }) => {
     },
   };
 
+  console.log(user,"userrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
+
   return (
     <>
       <div className="main-container block sm:hidden ">
         <motion.div
           animate={{
-            width: isOpenSidebar ? "200px" : "45px",
+            width: isOpenSidebar ? "200px" : "85px",
 
             transition: {
               duration: 0.5,
@@ -117,24 +124,30 @@ const SideBar = ({ children }) => {
         >
           <div className="top_section">
             <AnimatePresence>
-              {isOpenSidebar && (
-                <motion.h1
-                  variants={showAnimation}
-                  initial="hidden"
-                  animate="show"
-                  exit="hidden"
-                  className="logo"
-                >
-                  DoSomeCoding
-                </motion.h1>
-              )}
+              <div className="flex items-center gap-2">
+                <img
+                  src={PersonAvatar}
+                  className="h-10 w-10 rounded-md object-cover"
+                />
+                {isOpenSidebar && (
+                  <motion.h1
+                    variants={showAnimation}
+                    initial="hidden"
+                    animate="show"
+                    exit="hidden"
+                    className="logo"
+                  >
+                    {user.name}
+                  </motion.h1>
+                )}
+              </div>
             </AnimatePresence>
-
-            <div className="bars">
-              <button onClick={toggleSidebar}>
-                <MenuIcon />
-              </button>
-            </div>
+            <button
+              onClick={toggleSidebar}
+              className="bg-[#3a3a3a] rounded-full flex items-center justify-center absolute right-0 translate-x-2"
+            >
+              {isOpenSidebar ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+            </button>
           </div>
           <div className="search">
             <div className="search_icon">{/* <BiSearch /> */}</div>
@@ -151,7 +164,10 @@ const SideBar = ({ children }) => {
               )}
             </AnimatePresence>
           </div>
-          <section className="routes">
+          <section
+            className="routes"
+            style={{ alignItems: `${isOpenSidebar ? "" : "center"}` }}
+          >
             {routes.map((route, index) => {
               if (route.subRoutes) {
                 return (
@@ -170,6 +186,9 @@ const SideBar = ({ children }) => {
                   key={index}
                   className="link"
                   activeClassName="active"
+                  style={{
+                    justifyContent: `${isOpenSidebar ? "" : "center"}`,
+                  }}
                 >
                   <div className="icon">{route.icon}</div>
                   <AnimatePresence>
