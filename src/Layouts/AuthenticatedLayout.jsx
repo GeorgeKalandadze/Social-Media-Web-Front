@@ -14,6 +14,7 @@ const AuthenticatedLayout = ({children}) => {
   const handleClose = () => {
     dispatch(closeModal());
   }
+  const isOpenSidebar = useSelector((state) => state.sidebar.isOpenSidebar);
 
   return (
     <div>
@@ -29,7 +30,7 @@ const AuthenticatedLayout = ({children}) => {
       >
         <LeftSide />
         <SideBar />
-        <div className="py-4 mr-4 sm:py-0 sm:mr-0">{children}</div>
+        <div className={`py-4 mr-4 sm:py-0 sm:mr-0 ${isOpenSidebar ? 'blurred' : ''}`}>{children}</div>
         <RightSide />
       </div>
     </div>

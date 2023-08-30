@@ -6,9 +6,12 @@
   background: rgb(0, 7, 61);
   color: white;
   height: 100vh;
+  z-index: 10;
   position: sticky;
   top: 0;
 }
+
+
 
 .top_section {
   display: flex;
@@ -91,4 +94,11 @@
 .menu_container .link {
   padding-left: 20px;
   border-bottom: #fff 0.5px solid;
+}
+
+@media screen and (max-width: 640px) {
+  .blurred {
+  filter: blur(8px); /* You can adjust the blur intensity */
+  transition: filter 0.3s ease; /* You might want to add a smooth transition */
+}
 }

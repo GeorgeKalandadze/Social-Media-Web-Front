@@ -7,6 +7,8 @@ import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import BookmarkBorderOutlinedIcon from "@mui/icons-material/BookmarkBorderOutlined";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutlined";
+import { useDispatch, useSelector } from "react-redux";
+import { closeSidebar, openSidebar } from "../../Redux/sidebarSlice";
 const routes = [
   {
     path: "/home",
@@ -52,8 +54,18 @@ const routes = [
 ];
 
 const SideBar = ({ children }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const toggle = () => setIsOpen(!isOpen);
+  // const [isOpen, setIsOpen] = useState(false);
+  // const toggle = () => setIsOpen(!isOpen);
+  const isOpenSidebar = useSelector((state) => state.sidebar.isOpenSidebar);
+  const dispatch = useDispatch();
+
+  const toggleSidebar = () => {
+    if (isOpenSidebar) {
+      dispatch(closeSidebar());
+    } else {
+      dispatch(openSidebar());
+    }
+  };
   const inputAnimation = {
     hidden: {
       width: 0,
@@ -93,7 +105,7 @@ const SideBar = ({ children }) => {
       <div className="main-container block sm:hidden ">
         <motion.div
           animate={{
-            width: isOpen ? "200px" : "45px",
+            width: isOpenSidebar ? "200px" : "45px",
 
             transition: {
               duration: 0.5,
@@ -105,7 +117,7 @@ const SideBar = ({ children }) => {
         >
           <div className="top_section">
             <AnimatePresence>
-              {isOpen && (
+              {isOpenSidebar && (
                 <motion.h1
                   variants={showAnimation}
                   initial="hidden"
@@ -119,7 +131,7 @@ const SideBar = ({ children }) => {
             </AnimatePresence>
 
             <div className="bars">
-              <button onClick={toggle}>
+              <button onClick={toggleSidebar}>
                 <MenuIcon />
               </button>
             </div>
@@ -127,7 +139,7 @@ const SideBar = ({ children }) => {
           <div className="search">
             <div className="search_icon">{/* <BiSearch /> */}</div>
             <AnimatePresence>
-              {isOpen && (
+              {isOpenSidebar && (
                 <motion.input
                   initial="hidden"
                   animate="show"
@@ -144,10 +156,10 @@ const SideBar = ({ children }) => {
               if (route.subRoutes) {
                 return (
                   <SidebarMenu
-                    setIsOpen={setIsOpen}
+                    // setIsOpen={setIsOpen}
                     route={route}
                     showAnimation={showAnimation}
-                    isOpen={isOpen}
+                    // isOpen={isOpen}
                   />
                 );
               }
@@ -161,7 +173,7 @@ const SideBar = ({ children }) => {
                 >
                   <div className="icon">{route.icon}</div>
                   <AnimatePresence>
-                    {isOpen && (
+                    {isOpenSidebar && (
                       <motion.div
                         variants={showAnimation}
                         initial="hidden"

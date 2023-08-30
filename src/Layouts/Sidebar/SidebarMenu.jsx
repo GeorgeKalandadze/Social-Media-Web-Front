@@ -1,7 +1,9 @@
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import { NavLink } from "react-router-dom";
+import { closeSidebar } from "../../Redux/sidebarSlice";
 
 const menuAnimation = {
   hidden: {
@@ -35,25 +37,27 @@ const menuItemAnimation = {
   }),
 };
 
-const SidebarMenu = ({ route, showAnimation, isOpen, setIsOpen }) => {
+const SidebarMenu = ({ route, showAnimation }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-    setIsOpen(true);
-  };
+   const dispatch = useDispatch();
+  const isOpenSidebar = useSelector((state) => state.sidebar.isOpenSidebar);
+   const toggleMenu = () => {
+     setIsMenuOpen(!isMenuOpen);
+   };
 
-  useEffect(() => {
-    if (!isOpen) {
-      setIsMenuOpen(false);
-    }
-  }, [isOpen]);
+   useEffect(() => {
+     if (!isMenuOpen) {
+       dispatch(closeSidebar());
+     }
+   }, [isMenuOpen, dispatch]);
+
   return (
     <>
       <div className="menu" onClick={toggleMenu}>
         <div className="menu_item">
           <div className="icon">{route.icon}</div>
           <AnimatePresence>
-            {isOpen && (
+            {isOpenSidebar && (
               <motion.div
                 variants={showAnimation}
                 initial="hidden"
@@ -66,7 +70,7 @@ const SidebarMenu = ({ route, showAnimation, isOpen, setIsOpen }) => {
             )}
           </AnimatePresence>
         </div>
-        {isOpen && (
+        {isOpenSidebar && (
           <motion.div
             animate={
               isMenuOpen
