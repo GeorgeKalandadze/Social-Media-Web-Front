@@ -1,8 +1,6 @@
 import { NavLink } from "react-router-dom";
-import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import SidebarMenu from "./SidebarMenu";
-import MenuIcon from "@mui/icons-material/Menu";
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import BookmarkBorderOutlinedIcon from "@mui/icons-material/BookmarkBorderOutlined";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
@@ -12,6 +10,11 @@ import { closeSidebar, openSidebar } from "../../Redux/sidebarSlice";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import PersonAvatar from "../../assets/personimg.jpg";
+import PostAddIcon from "@mui/icons-material/PostAdd";
+import { openModal } from "../../Redux/postModalSlice";
+import SearchIcon from "@mui/icons-material/Search";
+import LogoutIcon from "@mui/icons-material/Logout";
+
 
 const routes = [
   {
@@ -25,35 +28,11 @@ const routes = [
     icon: <BookmarkBorderOutlinedIcon />,
   },
   {
-    path: "/notifications",
-    name: "Notifications",
-    icon: <NotificationsOutlinedIcon />,
-  },
-  {
     path: "/analytics",
     name: "Analytics",
     icon: <PieChartOutlineOutlinedIcon/>
   },
 
-  {
-    path: "/settings",
-    name: "Settings",
-    exact: true,
-    subRoutes: [
-      {
-        path: "/settings/profile",
-        name: "Profile ",
-      },
-      {
-        path: "/settings/2fa",
-        name: "2FA",
-      },
-      {
-        path: "/settings/billing",
-        name: "Billing",
-      },
-    ],
-  },
  
 ];
 
@@ -122,9 +101,14 @@ const SideBar = ({ children }) => {
           }}
           className={`sidebar `}
         >
-          <div className="top_section">
+          <div
+            className="top_section"
+            style={{
+              justifyContent: `${isOpenSidebar ? "" : "center"}`,
+            }}
+          >
             <AnimatePresence>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-4">
                 <img
                   src={PersonAvatar}
                   className="h-10 w-10 rounded-md object-cover"
@@ -150,7 +134,9 @@ const SideBar = ({ children }) => {
             </button>
           </div>
           <div className="search">
-            <div className="search_icon">{/* <BiSearch /> */}</div>
+            <div className="flex justify-center">
+              <SearchIcon />
+            </div>
             <AnimatePresence>
               {isOpenSidebar && (
                 <motion.input
@@ -168,18 +154,22 @@ const SideBar = ({ children }) => {
             className="routes"
             style={{ alignItems: `${isOpenSidebar ? "" : "center"}` }}
           >
+            <div
+              className="flex items-center"
+              onClick={() => dispatch(openModal())}
+            >
+              <button className="link" activeClassName="active">
+                <PostAddIcon />
+              </button>
+              {isOpenSidebar ? <p>Create Post</p> : ""}
+            </div>
+            <div className="flex items-center">
+              <button className="link" activeClassName="active">
+                <NotificationsOutlinedIcon />
+              </button>
+              {isOpenSidebar ? <p>Notifications</p> : ""}
+            </div>
             {routes.map((route, index) => {
-              if (route.subRoutes) {
-                return (
-                  <SidebarMenu
-                    // setIsOpen={setIsOpen}
-                    route={route}
-                    showAnimation={showAnimation}
-                    // isOpen={isOpen}
-                  />
-                );
-              }
-
               return (
                 <NavLink
                   to={route.path}
@@ -208,6 +198,15 @@ const SideBar = ({ children }) => {
               );
             })}
           </section>
+          <div
+            className="flex items-center  w-full mt-[185px]"
+            style={{ justifyContent: `${isOpenSidebar ? "" : "center"}` }}
+          >
+            <button className="link" activeClassName="active">
+              <LogoutIcon />
+            </button>
+            {isOpenSidebar ? <p>Log out</p> : ""}
+          </div>
         </motion.div>
 
         <main>{children}</main>
