@@ -21,10 +21,10 @@ const AuthenticatedLayout = ({children}) => {
       <PostForm open={isPostModalOpen} close={() => handleClose()} />
       <div
         className="
-          py-0 px-[0px] grid grid-cols-[auto,auto]  gap-x-8
+          py-0 px-[0px] grid grid-cols-[10vw,auto] gap-x-8
           lg:px-[100px] lg:grid-cols-[18vw,auto,22vw] 
           md:grid-cols-[22vw,auto,22vw] 
-          sm: grid grid-cols-[1fr,2fr] sm:px-[30px] sm:py-4
+          sm:grid-cols-[1fr,2fr]  sm:px-[30px] sm:py-4
           bg-red-500 sm:bg-yellow-500 md:bg-blue-500 lg:bg-green-500 "
       >
         <LeftSide />
