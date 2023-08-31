@@ -37,14 +37,25 @@ const Login = () => {
       <LeftSide
         bgImage={SocialImg}
         page={"Log in"}
-        description={'Register to our social platform and enjoy your life, here you can see many funny news'}
-        span={'You are not registered?'}
-        buttonText={'Sign Up'}
+        description={
+          "Register to our social platform and enjoy your life, here you can see many funny news"
+        }
+        span={"You are not registered?"}
+        buttonText={"Sign Up"}
         link="/register"
       />
       <RightSide className={"justify-center"}>
-        <form className='flex flex-col gap-[30px] items-center w-full' onSubmit={handleLogin}>
-          <h1 className='text-[#555] font-bold text-[30px]'>Login</h1>
+        <form
+          className="flex flex-col gap-[30px] items-center w-full"
+          onSubmit={handleLogin}
+        >
+          <h1 className="text-[#555] font-bold text-[30px]">Login</h1>
+          <p className="block md:hidden">
+            You are not registered?{" "}
+            <Link className="text-[#6b21a8] font-medium" to="register">
+              Sign Up
+            </Link>
+          </p>
           <Input
             placeholder="Enter Email"
             type="email"
@@ -59,12 +70,15 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
             error={errors.password}
           />
-          <button type="submit" className="w-full py-2 px-4 border-none bg-[#938ceb] text-white  cursor-pointer">
+          <button
+            type="submit"
+            className="w-full py-2 px-4 border-none bg-[#938ceb] text-white  cursor-pointer"
+          >
             Log In
           </button>
-          <GoogleAuthButton/>
+          <GoogleAuthButton />
           <Link
-            to={'/forgot-password'}
+            to={"/forgot-password"}
             className="underline text-sm text-[#938ceb] hover:text-gray-900 rounded-md "
           >
             Forgot your password?
@@ -72,7 +86,7 @@ const Login = () => {
         </form>
       </RightSide>
     </GuestLayout>
-  )
+  );
 }
 
 export default Login;

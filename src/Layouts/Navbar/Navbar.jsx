@@ -9,7 +9,7 @@ const Navbar = () => {
     <nav className="w-full py-4 px-[30px] bg-gray-100 hidden justify-between items-center shadow-md lg:px-[100px]  sm:flex">
       <div className="flex items-center gap-4">
         <h1 className="text-[25px] font-bold text-purple-800">Giosocial</h1>
-        <div className="rounded bg-white flex w-[300px] h-[40px] items-center px-2 gap-3">
+        <div className="rounded bg-white flex w-[200px] h-[40px] items-center px-2 gap-3 md:w-[300px]">
           <SearchOutlinedIcon />
           <input
             placeholder="Search"

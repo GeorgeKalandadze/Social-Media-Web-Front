@@ -9,15 +9,15 @@ const RightSide = ({children, className}) => {
   };
 
   return (
-    <motion.div 
-      className={`flex-1 p-10 flex flex-col gap-10  ${className}`} 
-      variants={opacityVariant} 
+    <motion.div
+      className={`flex-1 flex flex-col gap-10 p-[30px] w-full  ${className} lg:p-[70px] `}
+      variants={opacityVariant}
       initial="hidden"
-      animate={"visible"} 
+      animate={"visible"}
     >
       {children}
     </motion.div>
-  )
+  );
 }
 
 export default RightSide
