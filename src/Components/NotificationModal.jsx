@@ -44,9 +44,9 @@ const NotificationModal = ({open, close}) => {
               </h1>
             </div>
           ) : (
-            <div className="flex flex-col mt-2">
+            <div className="flex flex-col mt-2 gap-2">
               {notifications.map((not) => (
-                <div className="flex items-center gap-3 border-b-2 py-2">
+                <div className="flex cursor-pointer rounded px-2 items-center gap-3 border-[1.6px] border-green-300 py-2">
                   <img
                     src={PersonAvatar}
                     className="h-12 w-12 rounded-full object-cover"

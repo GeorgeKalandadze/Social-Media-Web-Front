@@ -21,8 +21,12 @@ const Navbar = () => {
         </div>
       </div>
       <div className="flex items-center gap-4">
-        <button onClick={() => dispatch(openNotificationModal())}>
+        <button
+          onClick={() => dispatch(openNotificationModal())}
+          className="relative"
+        >
           <NotificationsOutlinedIcon />
+          <div className="w-[8px] h-[8px] rounded-full absolute bg-red-500 top-[20%] right-1"></div>
         </button>
         <div className="flex items-center gap-2">
           <img
