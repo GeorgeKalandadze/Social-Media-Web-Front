@@ -21,7 +21,9 @@ const style = {
 };
 
 const NotificationModal = ({open, close}) => {
-  const notifications = useSelector((state) => state.notifications);
+  const notifications = useSelector((state) => state.notifications.notifications);
+
+  console.log(notifications, "render not");
   return (
     <div>
       <Modal open={open} onClose={close}>
@@ -54,7 +56,7 @@ const NotificationModal = ({open, close}) => {
                   <div className="flex flex-col gap-3">
                     <h1 className="text-[#656b83]">
                       <span className="font-bold text-black">
-                        {not.message_author}
+                        {not.author_name}
                       </span>{" "}
                       {not.message}
                     </h1>
