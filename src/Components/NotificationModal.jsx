@@ -42,6 +42,22 @@ const NotificationModal = ({open, close}) => {
      }
    };
 
+   const markAllNotificationsAsRead = () => {
+     axiosClient
+       .patch('/notifications/markAllAsRead')
+       .then((response) => {
+         console.log(response.data.message);
+         notifications.forEach((notification) => {
+           if (!notification.is_read) {
+             dispatch(markNotificationAsRead(notification));
+           }
+         });
+       })
+       .catch((error) => {
+         console.error(error);
+       });
+   };
+
   console.log(notifications, "render not");
   return (
     <div>
@@ -54,7 +70,7 @@ const NotificationModal = ({open, close}) => {
                 {notifications.length}
               </span>
             </h1>
-            <button className="text-[#45a7f5] underline ">
+            <button className="text-[#45a7f5] underline " onClick={() => markAllNotificationsAsRead()}>
               Mark as all read
             </button>
           </div>
