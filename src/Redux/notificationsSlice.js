@@ -26,7 +26,15 @@ const notificationsSlice = createSlice({
   initialState,
   reducers: {
     updateNotifications: (state, action) => {
-      state.notifications.push(action.payload);
+      state.notifications = [...state.notifications, action.payload];
+    },
+    markNotificationAsRead: (state, action) => {
+      const notificationToUpdate = state.notifications.find(
+        (notification) => notification.id === action.payload.id
+      );
+      if (notificationToUpdate) {
+        notificationToUpdate.is_read = true;
+      }
     },
   },
   extraReducers: (builder) => {
@@ -47,5 +55,5 @@ const notificationsSlice = createSlice({
   },
 });
 
-export const { updateNotifications } = notificationsSlice.actions;
+export const { updateNotifications, markNotificationAsRead } = notificationsSlice.actions;
 export default notificationsSlice.reducer;

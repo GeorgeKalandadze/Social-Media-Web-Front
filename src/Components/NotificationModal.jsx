@@ -1,7 +1,9 @@
 import { Box, Modal } from '@mui/material'
 import React from 'react'
 import PersonAvatar from "../assets/personimg.jpg";
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import axiosClient from '../Axios/axiosClient';
+import { markNotificationAsRead } from '../Redux/notificationsSlice';
 
 const style = {
   position: "fixed",
@@ -22,6 +24,23 @@ const style = {
 
 const NotificationModal = ({open, close}) => {
   const notifications = useSelector((state) => state.notifications.notifications);
+  const dispatch = useDispatch();
+
+
+   const markAsRead = (notification) => {
+     if (!notification.is_read) {
+       
+       axiosClient
+         .put(`/notifications/${notification.id}`)
+         .then((response) => {
+           console.log(response.data.message);
+           dispatch(markNotificationAsRead(notification));
+         })
+         .catch((error) => {
+           console.error(error);
+         });
+     }
+   };
 
   console.log(notifications, "render not");
   return (
@@ -48,7 +67,12 @@ const NotificationModal = ({open, close}) => {
           ) : (
             <div className="flex flex-col mt-2 gap-2">
               {notifications.map((not) => (
-                <div className="flex cursor-pointer rounded px-2 items-center gap-3 border-[1.6px] border-green-300 py-2">
+                <div
+                  className={`flex cursor-pointer rounded px-2 items-center gap-3 py-2 ${
+                    not.is_read ? "" : "border-[1.6px] border-green-300"
+                  }`}
+                  onClick={() => markAsRead(not)}
+                >
                   <img
                     src={PersonAvatar}
                     className="h-12 w-12 rounded-full object-cover"
