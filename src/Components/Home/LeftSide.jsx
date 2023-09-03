@@ -23,16 +23,18 @@ const LeftSide = () => {
 
   return (
     <>
-      <div className="flex flex-col gap-6 sticky h-max top-0">
-        <div className="flex items-center gap-3 bg-gray-100  px-4 py-3 rounded-xl cursor-pointer shadow-md">
+      <div className="hidden gap-6 sticky h-max top-0 sm:flex flex-col">
+        <div className="flex flex-col items-center gap-3 bg-gray-100  px-4 py-3 rounded-xl cursor-pointer shadow-md lg:flex-row">
           <img
             src={PersonAvatar}
             className="h-14 w-14 rounded-full object-cover"
             style={{ border: "3px solid white" }}
           />
           <div className="flex flex-col gap-2">
-            <p className="text-[20px] font-bold">George</p>
-            <p className="text-gray-500 font-medium">George@gmail.com</p>
+            <p className="text-[20px] text-center font-bold lg:text-start">George</p>
+            <p className="text-gray-500 text-[12px] font-medium lg:text-[17px]">
+              George@gmail.com
+            </p>
           </div>
         </div>
         <div className="flex flex-col  ">
