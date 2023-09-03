@@ -11,7 +11,7 @@ const initialData = {
 export const fetchPosts = createAsyncThunk("posts/fetchPosts", async () => {
   try {
     const response = await axiosClient.get("/posts");
-   
+    
     return response.data;
   } catch (error) {
     throw error;

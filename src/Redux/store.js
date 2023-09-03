@@ -5,7 +5,7 @@ import userDataReducer from './userDataSlice';
 import postSlice from './posts';
 import selectedPostSlice from './selectedPostDataSlice';
 import favoritedPostsSlice from './favoritedPostsSlice';
-import sidebarSlice from './sidebarSlice';
+
 
 
 export const store = configureStore({
@@ -16,7 +16,7 @@ export const store = configureStore({
     posts: postSlice,
     selectedPostData: selectedPostSlice,
     favoritePosts: favoritedPostsSlice,
-    sidebar:sidebarSlice
+
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

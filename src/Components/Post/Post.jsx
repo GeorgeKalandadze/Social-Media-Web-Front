@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import PersonAvatar from '../../assets/personimg.jpg';
 import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
 import TextsmsOutlinedIcon from '@mui/icons-material/TextsmsOutlined';
@@ -10,20 +10,19 @@ import FormatTimeAgo from '../FormatTimeAgo';
 import CommentModal from '../Comment/CommentModal';
 import axiosClient from '../../Axios/axiosClient';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchPosts, updatePostAfterFavorite, updatePostAfterVote } from '../../Redux/posts';
+import { updatePostAfterFavorite, updatePostAfterVote } from '../../Redux/posts';
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
-import { fetchFavoritedPosts, removeFavoritePost } from '../../Redux/favoritedPostsSlice';
+import {removeFavoritePost } from '../../Redux/favoritedPostsSlice';
+import Pusher from "pusher-js";
+import { echo } from '../../Config/Broadcasting';
+import { updateNotifications } from '../../Redux/notificationsSlice';
 
 const Post = ({props, openModal, isOpen}) => {
   const timeAgo = FormatTimeAgo(props.created_at);
   const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
-  const posts = useSelector((state) => state.posts.posts.data);
-  const favoritePosts = useSelector(
-    (state) => state.favoritePosts.favoritePosts
-  );
+  const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch()
-
 
    const handleVote = (postId, upvote) => {
      const voteValue = upvote ? 1 : -1;
@@ -37,6 +36,11 @@ const Post = ({props, openModal, isOpen}) => {
              upvote: upvote,
            })
          );
+         const likeChannel = echo.private("like-channel." + postId);
+         likeChannel.listen(".new-like", (data) => {
+           console.log("Like notification received:", data);
+           dispatch(updateNotifications(data));
+         });
          
        })
        .catch((err) => {
@@ -68,6 +72,25 @@ const Post = ({props, openModal, isOpen}) => {
   //  };
   //  dispatch(fetchFavoritedPosts([...favoritePosts, updatedFavoritePost]));
 
+
+
+
+  // useEffect(() => {
+  //   const likeChannel = echo.private("like-channel." + props.id);
+  
+  //   likeChannel.listen(".new-like", (data) => {
+  //     console.log("Like notification received:", data);
+  //     dispatch(updateNotifications(data))
+  //   });
+
+  //   return () => {
+  //     likeChannel.stopListening(".new-like");
+  //   };
+  // }, [id]);
+
+
+
+  
   return (
     <>
       <div className="w-full rounded-xl bg-gray-100 p-4 flex flex-col gap-4 ">

@@ -21,7 +21,7 @@ const setCsrfToken = async () => {
   }
 };
 
-setCsrfToken()
+// setCsrfToken()
 
 // Set CSRF token initially when the application loads
 

@@ -2,6 +2,9 @@ import React, { useState } from 'react'
 import PersonAvatar from "../../assets/personimg.jpg";
 import SendIcon from "@mui/icons-material/Send";
 import axiosClient from '../../Axios/axiosClient';
+import { echo } from '../../Config/Broadcasting';
+import { useDispatch } from 'react-redux';
+import { updateNotifications } from '../../Redux/notificationsSlice';
 
 const CommentInputGroup = ({
   postId,
@@ -9,11 +12,12 @@ const CommentInputGroup = ({
   comments,
   parentCommentId,
 }) => {
+
   const [commentBody, setCommentBody] = useState("");
+  const dispatch = useDispatch()
 
   const makeComment = (e) => {
     e.preventDefault();
-    if (commentBody) {
       const commentData = {
         body: commentBody,
         post_id: postId,
@@ -22,20 +26,21 @@ const CommentInputGroup = ({
       axiosClient
         .post("/comment/create", commentData)
         .then((res) => {
-          console.log(res, "response");
-          // if (res.data.data.parent_comment_id !== null){
-              
-          // }
+          const commentChannel = echo.private("comment-channel." + postId);
+          commentChannel.listen(".new-comment", (data) => {
+            console.log("comment notification received:", data);
+            dispatch(updateNotifications(data));
+          });
           setComments([...comments, res.data.data]);
           setCommentBody("");
+          
         })
         .catch((err) => {
           console.log(err);
         });
-    }
   };
 
-  console.log(comments, "comments");
+
 
   return (
     <div className="flex items-center gap-2">

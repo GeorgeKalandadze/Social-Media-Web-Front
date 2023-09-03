@@ -10,6 +10,8 @@ import { fetchPosts, removeDeletedPost } from '../Redux/posts'
 import { openModal } from "../Redux/postModalSlice";
 import { updateSelectPost } from "../Redux/selectedPostDataSlice";
 import { fetchUser } from '../Redux/userDataSlice';
+import Pusher from 'pusher-js'
+import { fetchNotifications } from '../Redux/notificationsSlice';
 
 const Home = () => {
   const posts = useSelector((state) => state.posts);
@@ -27,6 +29,9 @@ const Home = () => {
      dispatch(fetchUser());
    }, []);
 
+   useEffect(() => {
+     dispatch(fetchNotifications());
+   }, []);
 
   const deletePost = (postId) => {
     axiosClient
@@ -71,6 +76,8 @@ const Home = () => {
     }
     return false;
   };
+
+
 
   
   return (
