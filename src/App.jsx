@@ -27,7 +27,7 @@ function App() {
           <Route path='/verify-email' element={<VerifyEmail/>}/>
           <Route path='/home' element={<Home/>}/>
           <Route path='/favorite-posts' element={<FavoritePosts/>}/>
-          <Route path='/user' element={<UserProfile/>}/>
+          <Route path='/user/:id' element={<UserProfile/>}/>
         </Routes>
       </Router>
     </>

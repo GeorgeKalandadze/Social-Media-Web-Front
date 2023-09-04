@@ -17,6 +17,7 @@ import {removeFavoritePost } from '../../Redux/favoritedPostsSlice';
 import Pusher from "pusher-js";
 import { echo } from '../../Config/Broadcasting';
 import { updateNotifications } from '../../Redux/notificationsSlice';
+import { Link } from 'react-router-dom';
 
 const Post = ({props, openModal, isOpen}) => {
   const timeAgo = FormatTimeAgo(props.created_at);
@@ -102,7 +103,13 @@ const Post = ({props, openModal, isOpen}) => {
               // style={{border:"3px solid white"}}
             />
             <div className="flex flex-col gap-1">
-              <p className="text-[20px] font-medium">{props.user.name}</p>
+              <Link
+                to={`/user/${props.user.id}`}
+                className="text-[20px] font-medium"
+              >
+                {props.user.name}
+              </Link>
+             
               <p className="text-gray-500 ">{timeAgo}</p>
             </div>
           </div>

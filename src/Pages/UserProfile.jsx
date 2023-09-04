@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import AuthenticatedLayout from '../Layouts/AuthenticatedLayout'
 import BgImage from '../assets/nature1.jpg'
 import PersonAvatar from "../assets/personimg.jpg";
@@ -10,7 +10,23 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import EmailIcon from "@mui/icons-material/Email";
 import { IconButton } from '@mui/material';
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { useParams } from 'react-router-dom';
+import axiosClient from '../Axios/axiosClient';
 const UserProfile = () => {
+    const { id } = useParams();
+    const [userData, setUserData] = useState({});
+
+    useEffect(() => {
+      axiosClient
+        .get(`/user/${id}`)
+        .then((response) => {
+          setUserData(response.data.user);
+        })
+        .catch((error) => {
+          console.error("Error fetching user data:", error);
+        });
+    }, [id]);
+
   return (
     <AuthenticatedLayout>
       <div className="relative flex flex-col gap-4">
@@ -28,7 +44,7 @@ const UserProfile = () => {
             <LinkedInIcon className="text-gray-700" />
           </div>
           <div className="flex flex-col items-center gap-4 justify-center">
-            <h1 className="font-medium text-[27px]">George Kalandadze</h1>
+            <h1 className="font-medium text-[27px]">{userData.name}</h1>
             <div className="flex items-center gap-12 justify-center">
               <div className="flex items-center justify-between">
                 <LocationOnIcon className="text-gray-700" />
@@ -36,7 +52,7 @@ const UserProfile = () => {
               </div>
               <div className="flex items-center gap-2">
                 <EmailIcon className="text-gray-700" />
-                <p className="text-sm text-gray-500">Gio@gmail.com</p>
+                <p className="text-sm text-gray-500">{userData.email}</p>
               </div>
             </div>
             <button className="bg-[#6b21a8] text-white py-2 px-8 text-[17px] rounded">
@@ -65,9 +81,7 @@ const UserProfile = () => {
           </div>
         </div>
       </div>
-      <div>
-        
-      </div>
+      <div></div>
     </AuthenticatedLayout>
   );
 }
