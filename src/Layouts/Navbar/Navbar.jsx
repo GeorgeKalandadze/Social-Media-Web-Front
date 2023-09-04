@@ -1,15 +1,18 @@
-import React from 'react'
-import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined';
-import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
-import PersonAvatar from '../../assets/personimg.jpg';
-import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
-import { useDispatch } from 'react-redux';
-import { openNotificationModal } from '../../Redux/notificationModalSlice';
+import React from "react";
+import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
+import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
+import PersonAvatar from "../../assets/personimg.jpg";
+import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import { openNotificationModal } from "../../Redux/notificationModalSlice";
+import { useDispatch } from "react-redux";
 
 const Navbar = () => {
-    const dispatch = useDispatch();
+  const dispatch = useDispatch()
   return (
-
+    <nav className="w-full py-4 px-[30px] bg-gray-100 hidden justify-between items-center shadow-md lg:px-[100px]  sm:flex">
+      <div className="flex items-center gap-4">
+        <h1 className="text-[25px] font-bold text-purple-800">Giosocial</h1>
+        <div className="rounded bg-white flex w-[200px] h-[40px] items-center px-2 gap-3 md:w-[300px]">
           <SearchOutlinedIcon />
           <input
             placeholder="Search"
@@ -18,7 +21,9 @@ const Navbar = () => {
         </div>
       </div>
       <div className="flex items-center gap-4">
-
+        <button onClick={() => dispatch(openNotificationModal())}>
+          <NotificationsOutlinedIcon />
+        </button>
         <div className="flex items-center gap-2">
           <img
             src={PersonAvatar}
@@ -31,6 +36,6 @@ const Navbar = () => {
       </div>
     </nav>
   );
-}
+};
 
-export default Navbar
+export default Navbar;
