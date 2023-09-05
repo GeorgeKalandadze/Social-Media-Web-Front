@@ -213,14 +213,16 @@ const PostForm = ({open, close}) => {
             value={data.title}
             onChange={handleInputChange}
             error={errors.title?.[0]}
+            className="border-gray-200 border-2"
           />
           <InputGroup
             label="Content"
-            placeholder="Enter Content for post"
+            placeholder="Enter Content for post rounded"
             name={"body"}
             value={data.body}
             onChange={handleInputChange}
             error={errors.body?.[0]}
+            className="border-gray-200 border-2 rounded"
           />
           <div className="flex items-center justify-between">
             <button

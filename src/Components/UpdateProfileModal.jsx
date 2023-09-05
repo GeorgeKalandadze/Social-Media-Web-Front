@@ -1,6 +1,9 @@
-import { Box, Modal } from '@mui/material';
+import { Box, FormControl, InputLabel, Modal, Select } from '@mui/material';
 import React from 'react'
-
+import PersonImg from '../assets/personimg.jpg'
+import NatureImg from '../assets/nature1.jpg'
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import InputGroup from './Post/InputGroup';
 
 
 const style = {
@@ -31,7 +34,99 @@ const UpdateProfileModal = ({open, close}) => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}></Box>
+        <Box sx={style}>
+          <h1 className=" text-[26px] font-bold text-gray-500 opacity-40 mb-4">
+            Update Your Profile
+          </h1>
+          <div>
+            <div className="flex flex-wrap gap-5">
+              <label
+                htmlFor="cover"
+                className="flex flex-col gap-4 text-gray-400 text-[14px]"
+              >
+                <span>Cover Picture</span>
+                <div className="relative cursor-pointer">
+                  <img
+                    src={PersonImg}
+                    className="w-[100px] h-[100px] object-cover"
+                  />
+                  <CloudUploadIcon className="absolute top-[50%] translate-y-[-50%] left-[50%] translate-x-[-50%]" />
+                </div>
+              </label>
+              <input type="file" id="cover" style={{ display: "none" }} />
+              <label
+                htmlFor="profile"
+                className="flex flex-col gap-4 text-gray-400 text-[14px]"
+              >
+                <span>Profile Picture</span>
+                <div className="relative cursor-pointer">
+                  <img
+                    src={NatureImg}
+                    alt=""
+                    className="w-[100px] h-[100px] object-cover"
+                  />
+                  <CloudUploadIcon className="absolute top-[50%] translate-y-[-50%] left-[50%] translate-x-[-50%] " />
+                </div>
+              </label>
+              <input type="file" id="profile" style={{ display: "none" }} />
+            </div>
+            <div className="mt-4">
+              <InputGroup
+                className="border-b-2 border-gray-200 "
+                label="Name"
+                placeholder="enter your Name"
+              />
+              <InputGroup
+                className="border-b-2 border-gray-200 "
+                label="Password"
+                placeholder="enter your email"
+              />
+              <InputGroup
+                className="border-b-2 border-gray-200 "
+                label="Email"
+                placeholder="enter your email"
+              />
+
+              <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">Country</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  label="Country"
+                  //   value={selectedSubcategory}
+                  //   name="sub_category_id"
+                  //   onChange={(e) => {
+                  //     setSelectedSubcategory(e.target.value);
+                  //     handleInputChange(e);
+                  //   }}
+                >
+                  {/* {filteredSubcategories.map((subcategory) => (
+                    <MenuItem key={subcategory.id} value={subcategory.id}>
+                      {subcategory.name}
+                    </MenuItem>
+                  ))} */}
+                </Select>
+                {/* <p className="text-red-600 mt-2">
+                  {errors.sub_category_id?.[0] && errors.sub_category_id?.[0]}
+                </p> */}
+              </FormControl>
+              <div className="flex items-center justify-between">
+                <button
+                  type="button"
+                  className="mt-6 bg-[#423dce] text-white px-6 py-3 font-medium rounded"
+                >
+                  Update
+                </button>
+                <button
+                  type="button"
+                  className="mt-6 bg-red-700 text-white px-6 py-3 font-medium rounded"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </Box>
       </Modal>
     </div>
   );

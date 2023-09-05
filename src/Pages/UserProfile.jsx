@@ -14,12 +14,17 @@ import { useParams } from 'react-router-dom';
 import axiosClient from '../Axios/axiosClient';
 import { useDispatch, useSelector } from 'react-redux';
 import { openUpdateProfielModal } from '../Redux/updateProfileModalSlice';
+import { fetchUser } from '../Redux/userDataSlice';
 
 const UserProfile = () => {
     const { id } = useParams();
     const [userData, setUserData] = useState({});
     const currentUser = useSelector((state) => state.user.user);
     const dispatch = useDispatch();
+
+    useEffect(() => {
+      dispatch(fetchUser());
+    }, []);
 
     useEffect(() => {
       axiosClient
@@ -33,6 +38,7 @@ const UserProfile = () => {
     }, [id]);
 
 
+    console.log(currentUser,"user");
   return (
     <AuthenticatedLayout>
       <div className="relative flex flex-col gap-4">
