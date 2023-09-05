@@ -12,9 +12,14 @@ import { IconButton } from '@mui/material';
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useParams } from 'react-router-dom';
 import axiosClient from '../Axios/axiosClient';
+import { useDispatch, useSelector } from 'react-redux';
+import { openUpdateProfielModal } from '../Redux/updateProfileModalSlice';
+
 const UserProfile = () => {
     const { id } = useParams();
     const [userData, setUserData] = useState({});
+    const currentUser = useSelector((state) => state.user.user);
+    const dispatch = useDispatch();
 
     useEffect(() => {
       axiosClient
@@ -26,6 +31,7 @@ const UserProfile = () => {
           console.error("Error fetching user data:", error);
         });
     }, [id]);
+
 
   return (
     <AuthenticatedLayout>
@@ -55,8 +61,8 @@ const UserProfile = () => {
                 <p className="text-sm text-gray-500">{userData.email}</p>
               </div>
             </div>
-            <button className="bg-[#6b21a8] text-white py-2 px-8 text-[17px] rounded">
-              Follow
+            <button className="bg-[#6b21a8] text-white py-2 px-8 text-[17px] rounded" onClick={() => dispatch(openUpdateProfielModal())}>
+              {currentUser.id == id ? "Update" : "Follow"}
             </button>
           </div>
           <div className="flex gap-2">
