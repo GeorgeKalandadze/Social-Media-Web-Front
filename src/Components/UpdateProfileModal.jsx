@@ -1,9 +1,10 @@
-import { Box, FormControl, InputLabel, Modal, Select } from '@mui/material';
-import React from 'react'
+import { Box, FormControl, InputLabel, MenuItem, Modal, Select } from '@mui/material';
+import React, { useEffect, useState } from 'react'
 import PersonImg from '../assets/personimg.jpg'
 import NatureImg from '../assets/nature1.jpg'
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import InputGroup from './Post/InputGroup';
+import axiosClient from '../Axios/axiosClient';
 
 
 const style = {
@@ -26,6 +27,17 @@ const style = {
 
 
 const UpdateProfileModal = ({open, close}) => {
+    const [countries, setCountries] = useState([]);
+
+    useEffect(() => {
+        axiosClient.get('/countries')
+        .then((res) => {
+            setCountries(res.data)
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+    },[])
   return (
     <div>
       <Modal
@@ -100,11 +112,11 @@ const UpdateProfileModal = ({open, close}) => {
                   //     handleInputChange(e);
                   //   }}
                 >
-                  {/* {filteredSubcategories.map((subcategory) => (
-                    <MenuItem key={subcategory.id} value={subcategory.id}>
-                      {subcategory.name}
+                  {countries.map((country) => (
+                    <MenuItem key={country.id} value={country.id}>
+                      {country.name}
                     </MenuItem>
-                  ))} */}
+                  ))}
                 </Select>
                 {/* <p className="text-red-600 mt-2">
                   {errors.sub_category_id?.[0] && errors.sub_category_id?.[0]}
