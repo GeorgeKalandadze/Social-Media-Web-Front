@@ -5,6 +5,7 @@ import NatureImg from '../assets/nature1.jpg'
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import InputGroup from './Post/InputGroup';
 import axiosClient from '../Axios/axiosClient';
+import { useSelector } from 'react-redux';
 
 
 const style = {
@@ -28,6 +29,12 @@ const style = {
 
 const UpdateProfileModal = ({open, close}) => {
     const [countries, setCountries] = useState([]);
+    const currentUser = useSelector((state) => state.user.user);
+    const [newUser, setNewUser] = useState({
+      name: currentUser.name, 
+      email: currentUser.email, 
+    });
+    const [selectedCountry, setSelectedCountry] = useState("");
 
     useEffect(() => {
         axiosClient.get('/countries')
@@ -38,6 +45,17 @@ const UpdateProfileModal = ({open, close}) => {
             console.log(err);
         })
     },[])
+
+    const handleInputChange = (event) => {
+      const { name, value } = event.target;
+      // const newData = { [name]: value };
+      setNewUser((prevUser) => ({
+        ...prevUser,
+        [name]: value,
+      }));
+    };
+
+    console.log(newUser,"newuserrrrrrrrrrrr");
   return (
     <div>
       <Modal
@@ -86,18 +104,34 @@ const UpdateProfileModal = ({open, close}) => {
               <InputGroup
                 className="border-b-2 border-gray-200 "
                 label="Name"
+                name="name"
                 placeholder="enter your Name"
+                value={newUser.name}
+                onChange={handleInputChange}
               />
-              <InputGroup
-                className="border-b-2 border-gray-200 "
-                label="Password"
-                placeholder="enter your email"
-              />
-              <InputGroup
-                className="border-b-2 border-gray-200 "
-                label="Email"
-                placeholder="enter your email"
-              />
+              {currentUser.google_id === null ? (
+                <>
+                  <InputGroup
+                    className="border-b-2 border-gray-200"
+                    label="Email"
+                    name="email"
+                    placeholder="Enter your email"
+                    value={newUser.email}
+                    onChange={handleInputChange}
+                  />
+                  {/* <InputGroup
+                    className="border-b-2 border-gray-200"
+                    label="Password"
+                    placeholder="Enter your password"
+                    value={currentUser.password}
+                  />{" "}
+                  <InputGroup
+                    className="border-b-2 border-gray-200"
+                    label="Password"
+                    placeholder="Enter your password"
+                  /> */}
+                </>
+              ) : null}
 
               <FormControl fullWidth>
                 <InputLabel id="demo-simple-select-label">Country</InputLabel>
@@ -105,12 +139,12 @@ const UpdateProfileModal = ({open, close}) => {
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   label="Country"
-                  //   value={selectedSubcategory}
-                  //   name="sub_category_id"
-                  //   onChange={(e) => {
-                  //     setSelectedSubcategory(e.target.value);
-                  //     handleInputChange(e);
-                  //   }}
+                  value={selectedCountry}
+                  name="country_id"
+                  onChange={(e) => {
+                    setSelectedCountry(e.target.value);
+                    handleInputChange(e);
+                  }}
                 >
                   {countries.map((country) => (
                     <MenuItem key={country.id} value={country.id}>
