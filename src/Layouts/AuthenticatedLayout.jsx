@@ -8,6 +8,8 @@ import { closeModal } from "../Redux/postModalSlice";
 import SideBar from "./Sidebar/Sidebar";
 import NotificationModal from "../Components/NotificationModal";
 import { closeNotificationModal } from "../Redux/notificationModalSlice";
+import UpdateProfileModal from "../Components/UpdateProfileModal";
+import { closeUpdateProfileModal } from "../Redux/updateProfileModalSlice";
 
 const AuthenticatedLayout = ({ children }) => {
   const isPostModalOpen = useSelector((state) => state.postModal.isOpen);
@@ -21,13 +23,24 @@ const AuthenticatedLayout = ({ children }) => {
     (state) => state.notificationModal.isNotificationModal
   );
 
+  const isOpenUpdateProfileModal = useSelector(
+    (state) => state.updateProfileModal.isOpenUpdateProfileModal
+  );
+
   return (
     <div>
       <Navbar />
-      <PostForm open={isPostModalOpen} close={() => handleClose()} />
+      <PostForm 
+        open={isPostModalOpen} 
+        close={() => handleClose()} 
+      />
       <NotificationModal
         open={isNotificationModalOpen}
         close={() => dispatch(closeNotificationModal())}
+      />
+      <UpdateProfileModal
+        open={isOpenUpdateProfileModal}
+        close={() => dispatch(closeUpdateProfileModal())}
       />
       <div
         className="

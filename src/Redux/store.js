@@ -8,6 +8,7 @@ import favoritedPostsSlice from './favoritedPostsSlice';
 import sidebarSlice from './sidebarSlice';
 import notificationModalSlice from './notificationModalSlice';
 import notificationsSlice from './notificationsSlice';
+import updateProfileModalSlice from './updateProfileModalSlice';
 
 
 
@@ -21,7 +22,8 @@ export const store = configureStore({
     favoritePosts: favoritedPostsSlice,
     sidebar: sidebarSlice,
     notificationModal: notificationModalSlice,
-    notifications:notificationsSlice
+    notifications: notificationsSlice,
+    updateProfileModal: updateProfileModalSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

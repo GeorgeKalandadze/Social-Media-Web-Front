@@ -6,7 +6,7 @@ const InputGroup = ({ label, placeholder, type, name, className = '', value, onC
         <div className="flex flex-col justify-center  mb-[20px]">
             <label className=" text-[18px] text-gray-400 mb-2">{label}</label>
             <input
-                className={`border-gray-200 border-2 rounded py-2.5  px-2 outline-none ${className}`}
+                className={`py-2.5  px-2 outline-none ${className}`}
                 name={name}
                 placeholder={placeholder}
                 type={type}
